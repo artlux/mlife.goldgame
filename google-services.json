@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "723586620698",
+    "firebase_url": "https://mlifeknrasp.firebaseio.com",
+    "project_id": "mlifeknrasp",
+    "storage_bucket": "mlifeknrasp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723586620698:android:d0364d39cea3ff03",
+        "android_client_info": {
+          "package_name": "mlife.knrasp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723586620698-302kp4clqhkotu0p6rfqirlpfuqkv4s5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-yreDOqcgxNHSFP_fgKg5S245UruQ_TY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

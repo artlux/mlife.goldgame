@@ -37,6 +37,8 @@
 	<preference name="orientation" value="portrait" />
     <icon src="icon.png" />
     <platform name="android">
+		<preference name="AndroidPersistentFileLocation" value="Internal" />
+        <resource-file src="google-services.json" target="google-services.json" />
         <allow-intent href="market:*" />
 		<preference name="android-minSdkVersion" value="14" />
 		<preference name="SplashMaintainAspectRatio" value="true" />
