@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+<title>Игра Золотое королевство</title>
+<meta property="og:title" content="Игра Золотое королевство"/>
+<meta property="og:description" content="Экономическая игра с визуализацией острова в реальном времени, голосовое управление через Алису Яндекса."/>
+<meta property="og:image" content="https://g520.ru/images/prepared/main-image-promo-og.jpg"/>
+<script type="text/javascript" src="cordova.js"></script>
+<script data-main="js/main" src="js/lib/require.js"></script>
+<link href="https://g520.ru/bitrix/css/main/bootstrap.css" type="text/css"  rel="stylesheet"/>
+<link href="https://g520.ru/bitrix/css/main/font-awesome.css" type="text/css"  rel="stylesheet"/>
+<link href="css/chat.css" type="text/css"  rel="stylesheet"/>
+<link href="css/jquery-ui.min.css" type="text/css"  rel="stylesheet"/>
+<link href="css/template_styles_v2.css" type="text/css"  rel="stylesheet"/>
+</head>
+<body>
+<div class="topGameBlock">
+<div class="gameZoomBlock">
+	<div class="buttons">
+		<a href="#" data-size="1">x1</a>
+		<a href="#" data-size="2">x2</a>
+		<a href="#" data-size="3">x3</a>
+		<a href="#" data-size="4">x4</a>
+		<a href="#" data-size="5">x5</a>
+	</div>
+	<div class="wrapZoomLnk">
+	<a class="zoomLnk" href="#">масштаб</a>
+	</div>
+</div>
+<div class="gameLegend">
+	<div class="wrap">
+		<div class="resValues"></div>
+	</div>
+</div>
+<div class="bottomGameBlockWrap not_game_moving">
+<div class="bottomGameBlockTabsMenu">
+	<li class="tabLink1"><span class="active" data-tab="1">игровое меню</span></li>
+	<li class="tabLink2"><span data-tab="2">слежка</span></li>
+	<li class="tabLink3"><span data-tab="3">игроки на карте</span></li>
+	<a class="hideTab" href="#">X</a>
+</div>
+<div class="bottomGameBlock dragscroll"><div class="wrap wrap1"></div><div class="wrap wrap2" style="display:none;"></div><div class="wrap wrap3" style="display:none;"></div></div>
+</div>
+<div class="topGameBlockGameMapWrap"><canvas class="gameMap" id="gameMap"></canvas></div>
+<div class="not_game_moving contentModal modal fade" id="contentModal" tabindex="1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="gameBorder"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+<div class="gameBorderBottom"></div>
+  </div>
+</div>
+<div class="not_game_moving contentModal modal fade" id="contentModal2" tabindex="1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+	<div class="gameBorder"></div>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+	<div class="gameBorderBottom"></div>
+    </div>
+  </div>
+</div>
+<div class="loaderGame">
+	<div class="preloaderWrap">
+		<div class="preloaderIcon"></div>
+		<div class="preloaderText">идет загрузка<br><span class="progress"><span class="persent" style="width:0%;"></span></span></div>
+	</div>
+</div>
+</div>
+<script src="https://g520.ru/bitrix/js/main/core/core.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/core/core_promise.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/core/core_ajax.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/core/core_fx.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/core/core_dd.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/loadext/loadext.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/loadext/extension.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/polyfill/promise/js/promise.min.js"></script>
+<script src="https://g520.ru/bitrix/js/main/file_upload_agent.js"></script>
+<script src="https://g520.ru/bitrix/components/mlife/mlife.portal.social.file.input/templates/drag_n_drop/script_.js"></script>
+</body>
+</html>
