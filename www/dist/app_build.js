@@ -4539,6 +4539,9 @@ var gkGame = {
       this.viewport.on('zoomed', function () {
         gkGame.render.renderTimeout('zoomed', 1000);
       });
+      this.viewport.on('zoomed-end', function () {
+        gkGame.render.renderTimeout('zoomed-end', 1000);
+      });
       this.setResize();
       this.setCenter();
 
