@@ -56,11 +56,19 @@ font-size: 12px;
 line-height: 14px;
 border:none;
 margin-top: 0px;margin-left: 1px;
+-ms-user-select: auto;
+-o-user-select: auto;
+-webkit-user-select: auto;
+user-select: auto;
 }
 #chatWrapper textarea.area_style:focus {outline:none;
 font-size: 12px;
 line-height: 14px;
 border:none;
+-ms-user-select: auto;
+-o-user-select: auto;
+-webkit-user-select: auto;
+user-select: auto;
 }
 #chatWrapper .messages {display:block;height:100%;width:70%;overflow-y:scroll;border-right:1px solid #711e07;}
 #chatWrapper .messages {display:none;}
@@ -146,8 +154,8 @@ opacity:0.9;font-size:10px;line-height:12px;position:relative;top:-2px;right:-3p
 #chatWrapper .banForm {padding:5px;}
 #chatWrapper .banForm select {margin:auto;display:block;font-size:16px;}
 #chatWrapper .banForm select option {text-align:center;}
-#chatWrapper .banForm input {clear:both;display:block;border:1px solid #000000;margin:5px auto;padding:5px 10px;width:90%;text-align:center;font-size:16px;}
-#chatWrapper .banForm input.submit {cursor:pointer;}
+#chatWrapper .banForm input, #chatWrapper .banForm a.submit {clear:both;display:block;border:1px solid #000000;margin:5px auto;padding:5px 10px;width:90%;text-align:center;font-size:16px;text-decoration:none;}
+#chatWrapper .banForm input.submit, #chatWrapper .banForm a.submit {cursor:pointer;}
 
 #chatWrapper .errorMsg {color:red;display:block;text-align:center;font-size:16px;line-height:20px;padding:10px;}
 

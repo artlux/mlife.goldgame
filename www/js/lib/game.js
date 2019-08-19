@@ -1,3 +1,15 @@
+import { window, document } from 'ssr-window';
+import ajaxWrapper from './wrapper/ajax';
+import modal from './modal';
+import Base64 from './base64';
+import staticImages from './images';
+import audio from './audio';
+
+import $ from './dom7_lib';
+$.ajax = function(options){
+	ajaxWrapper(options);
+};
+
 var gkGame = {
 	debugMode: false,
 	notCalcMode: false,
@@ -7,17 +19,31 @@ var gkGame = {
 	
 	autKey: '',
 	
-	curUrl: "https://g520.ru/game_yandex/",
+	curUrl: "https://g520.ru/game.client.v.1/",
 	kef: 1.8,
 	ksizes:{},
 	mapId:null,
 	type:null,
 	mapData:null,
+	setLoadMenu:false,
+	draged: false,
 	
 	app: null,
 	viewport: null,
 	
 	friends: [],
+	
+	buildClickCalback: function(data){
+		if(gkGame.draged) return;
+		if(data.url && data.name){
+			audio.play('click_build');
+			modal.showBuildFromUrl(data.url,data.name);
+		}else if(data.build_content && data.name){
+			audio.play('click_build');
+			modal.showBuildContent(data.build_content,data.name);
+		}
+		//console.log(data);
+	},
 	
 	visible_sq_ar: [
 	284,306,283,286,263,285,260,240,238,//1
@@ -40,10 +66,16 @@ var gkGame = {
 	//отправка команд с клиента
 	sendCommand: function(cmd, callback){
 		
+		if(typeof(cmd) == 'object'){
+			var dtpost = cmd;
+		}else{
+			var dtpost = {key: gkGame.autKey, cmd:cmd};
+		}
+		
 		$.ajax({
 				url: this.curUrl+"api/send.php",
-				data: {key: gkGame.autKey, cmd:cmd},
-				dataType : "html",
+				data: dtpost,
+				dataType : "json",
 				type: "POST",
 				success: function (data, textStatus) {
 					if(typeof callback == 'function') callback.call(gkGame,data);
@@ -62,8 +94,7 @@ var gkGame = {
 	},
 	
 	//рисовать изображение
-	drawImage: function(img,x,y,w,h,mirror){
-		//console.log(img);
+	drawImage: function(img,x,y,w,h,mirror,handler_data){
 		var imageOb = this.getImageForName(img);
 		if(imageOb === false) return false;
 		var image = new PIXI.Sprite(imageOb.texture);
@@ -77,6 +108,23 @@ var gkGame = {
 			image.scale.x *= -1; 
 		}
 		
+		var activeUser = $('.userMapItemAuth .openMap').attr('data-user');
+		//console.log(this.moveMode);
+		if(((activeUser == this.mapData.ID) && !this.moveMode) || (this.type == 'map') || (this.type == 'global')){
+			if(typeof handler_data == 'object' && handler_data.hasOwnProperty('handle')){
+				if(handler_data.handle){
+					image.interactive = true;
+					image.buttonMode = true;
+					image.on('tap', function(e){
+						gkGame.buildClickCalback.call(e,e.target.handler_data);
+					});
+					image.on('click', function(e){
+						gkGame.buildClickCalback.call(e,e.target.handler_data);
+					});
+					image.handler_data = handler_data;
+				}
+			}
+		}
 		
 		//console.log(this.mapData.ID);
 		
@@ -96,7 +144,7 @@ var gkGame = {
 		this.viewport.addChild(image);
 		
 		
-		delete image;
+		//delete image;
 		this.render.render();
 		
 		return true;
@@ -117,7 +165,7 @@ var gkGame = {
 		var h = 900;
 		var w = 1280;
 		
-		kw = (w-80)*this.kef/12;
+		var kw = (w-80)*this.kef/12;
 		h = h*this.kef;
 		w = w*this.kef;
 		
@@ -149,6 +197,7 @@ var gkGame = {
 		
 		var num = 0;
 		var map_cords = [[null,null,null]];
+		var i, i2;
 		for (i=1;i<16;i++){
 			for (i2=1;i2<13;i2++){
 				if(i2<12){
@@ -164,6 +213,7 @@ var gkGame = {
 			}
 		}
 		this.map_cords = map_cords;
+		var k;
 		for (k in this.visible_sq_ar){
 			this.visible_sq[this.visible_sq_ar[k]] = true;
 		}
@@ -176,7 +226,8 @@ var gkGame = {
 		if(this.app === null){
 			this.loadMap(1,'player');
 			this.loadItems();
-			this.loadGameMenu();
+			this.setLoadMenu = true;
+			
 			$('.bottomGameBlockWrap').css({'z-index':10});
 			this.app = new PIXI.Application({
 				antialias: true,
@@ -189,7 +240,7 @@ var gkGame = {
 				//forceCanvas: true
 			});
 			
-			$('.topGameBlockGameMapWrap').html(this.app.view);
+			document.getElementById('topGameBlockGameMapWrapGameMap').appendChild(this.app.view);
 			
 			//this.loadChat();
 		}
@@ -204,7 +255,7 @@ var gkGame = {
 				worldWidth: this.ksizes.canv.w,
 				worldHeight: this.ksizes.canv.h,
 				passiveWheel: true,	
-				divWheel: $('.topGameBlockGameMapWrap').get(0),	
+				divWheel: document.getElementById('topGameBlockGameMapWrapGameMap'),
 				interaction: gkGame.app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
 			});
 			
@@ -223,7 +274,8 @@ var gkGame = {
 			
 			//this.viewport.on('bounce-x-start',function(){gkGame.render.start('bounce-x-start')});
 			//this.viewport.on('bounce-y-start',function(){gkGame.render.start('bounce-y-start')});
-			//this.viewport.on('drag-start',function(){gkGame.render.start('drag-start')});
+			this.viewport.on('drag-start',function(){gkGame.draged = true;});
+			this.viewport.on('drag-end',function(){gkGame.draged = false;});
 			//this.viewport.on('mouse-edge-start',function(){gkGame.render.start('mouse-edge-start')});
 			
 			//this.viewport.on('pinch-start',function(){gkGame.render.start('pinch-start')});
@@ -318,7 +370,7 @@ var gkGame = {
 		for(i = step; i >= 0; i-=1){
 			zoomState.push(dist_step*((i<step)?i:step) + this.ksizes.zoom.minWidth);
 		}
-		delete i;
+		//delete i;
 		
 		//key 0 is default min zoom, reverse (world -> to screen)
 		if(zoom in zoomState){
@@ -332,6 +384,7 @@ var gkGame = {
 	//сортировка зданий для отрисовки
 	sortBuilds: function(){
 		var sortable = [];
+		var kb;
 		for(kb in this.mapData.dt){
 			var sq = parseInt(this.mapData.dt[kb].sq);
 			if(sq in this.map_cords)
@@ -342,14 +395,14 @@ var gkGame = {
 		});
 		
 		var sortBuilds = [];
-		
+		var kb;
 		for(kb in sortable){
 			sortBuilds.push(this.mapData.dt[sortable[kb][0]]);
 		}
 		
 		this.mapData.dt = sortBuilds;
 		
-		delete sortBuilds, sortable;
+		//delete sortBuilds, sortable;
 	},
 	
 	//отрисовка единичного здания
@@ -369,7 +422,8 @@ var gkGame = {
 					this.map_cords[build_data.sq][1] + build_data.ofset.y*this.kef,
 					build_data.size.width*this.kef,
 					build_data.size.height*this.kef,
-					build_data.inv
+					build_data.inv,
+					build_data
 				);
 			}
 			
@@ -386,7 +440,8 @@ var gkGame = {
 						this.map_cords[build_data.sq][1] + build_data.ofset.y*this.kef,
 						build_data.size.width*this.kef,
 						build_data.size.height*this.kef,
-						build_data.inv
+						build_data.inv,
+						build_data
 					);
 				}
 			}
@@ -401,7 +456,7 @@ var gkGame = {
 		
 		this.debug('рисование войск игрока',this.mapData.units);
 		
-		var fontSize = ($(window).width()>680 ? 18*this.kef : 36*this.kef);
+		var fontSize = ($(window).width()>680 ? 18*this.kef : 22*this.kef);
 		var style = new PIXI.TextStyle({
 			fill: "#FF0000",
 			stroke: "#FFFFFF",
@@ -437,7 +492,7 @@ var gkGame = {
 			];
 			
 		}
-		
+		var k;
 		for (k in temp_units_draw){
 			var itm = temp_units_draw[k];
 			this.drawImage('units_'+itm[0]+'.png',this.map_cords[itm[1]][0] + itm[2]*this.kef, this.map_cords[itm[1]][1] + itm[3]*this.kef,itm[6]*this.kef, itm[7]*this.kef,itm[8]);
@@ -446,11 +501,11 @@ var gkGame = {
 				text.x = this.map_cords[itm[1]][0] + itm[4]*this.kef;
 				text.y = this.map_cords[itm[1]][1] + itm[5]*this.kef - fontSize;
 				this.viewport.addChild(text);
-				delete text;
+				//delete text;
 			}
 		}
-		delete style;
-		delete fontSize;
+		//delete style;
+		//delete fontSize;
 		this.render.render();
 	},
 	
@@ -469,7 +524,7 @@ var gkGame = {
 			line.lineStyle(2, 0xfff787);
 			line.lineTo(this.map_cords[213][0]+44*this.kef,this.map_cords[213][1]-33*this.kef+31*this.kef);
 			this.viewport.addChild(line);
-			delete line;
+			//delete line;
 			
 			//круг
 			var circle = new PIXI.Graphics();
@@ -479,7 +534,7 @@ var gkGame = {
 			circle.y = this.map_cords[213][1]-33*this.kef;
 			circle.alpha = 1;
 			this.viewport.addChild(circle);
-			delete circle;
+			//delete circle;
 			
 			//прямоугольник
 			var sq = new PIXI.Graphics();
@@ -489,7 +544,7 @@ var gkGame = {
 			sq.y = this.map_cords[213][1]-30*this.kef;
 			sq.alpha = 0.8;
 			this.viewport.addChild(sq);
-			delete sq;
+			//delete sq;
 			
 			//прямоугольник
 			var sq = new PIXI.Graphics();
@@ -499,7 +554,7 @@ var gkGame = {
 			sq.y = this.map_cords[213][1]-30*this.kef;
 			sq.alpha = 0.5;
 			this.viewport.addChild(sq);
-			delete sq;
+			//delete sq;
 			
 			var fontSize = 12*this.kef;
 			var style = new PIXI.TextStyle({
@@ -516,7 +571,7 @@ var gkGame = {
 			text.width = wd*this.kef;
 			text.alpha = 0.8;
 			this.viewport.addChild(text);
-			delete text;
+			//delete text;
 			
 			var fontSize = 10*this.kef;
 			var style = new PIXI.TextStyle({
@@ -533,7 +588,7 @@ var gkGame = {
 			text.width = wd2*this.kef;
 			text.alpha = 0.5;
 			this.viewport.addChild(text);
-			delete text;
+			//delete text;
 			
 			this.render.render();
 		}
@@ -578,7 +633,7 @@ var gkGame = {
 		circle.y = this.map_cords[num][1]-41*this.kef;
 		circle.alpha = 0.5;
 		this.viewport.addChild(circle);
-		delete circle;
+		//delete circle;
 
 		//текст в круге
 		var text = new PIXI.Text(number,style[0]);
@@ -590,10 +645,11 @@ var gkGame = {
 		text.y = this.map_cords[num][1] - 36*this.kef - fontSize;
 		text.alpha = 0.7;
 		this.viewport.addChild(text);
-		delete text;
+		//delete text;
 
 		
 		//войска
+		var k;
 		for (k in tx){
 			
 			var text = new PIXI.Text(tx[k],style[1]);
@@ -601,7 +657,7 @@ var gkGame = {
 			text.y = this.map_cords[num][1] - 26*this.kef + 16*this.kef*k - fontSize - 10;
 			
 			this.viewport.addChild(text);
-			delete text;
+			//delete text;
 			
 		}
 		this.render.render();
@@ -610,6 +666,7 @@ var gkGame = {
 	//показ ресурсов
 	drawRes: function(){
 		var ht = '';
+		var k;
 		for (k in this.mapData.res){
 			ht += '<span class="item'+k+'"><b></b> <i>'+this.mapData.res[k]+'</i></span>';
 		}
@@ -629,7 +686,7 @@ var gkGame = {
 			circle.y = this.map_cords[213][1]-40*this.kef;
 			circle.alpha = 1;
 			this.viewport.addChild(circle);
-			delete circle;
+			//delete circle;
 			
 			var fontSize = 12*this.kef;
 			var style = new PIXI.TextStyle({
@@ -646,7 +703,7 @@ var gkGame = {
 			text.width = 10*this.kef;
 			text.alpha = 1;
 			this.viewport.addChild(text);
-			delete text;
+			//delete text;
 			
 			$('.level_'+this.mapData.ID).html(this.mapData.level);
 			
@@ -699,13 +756,29 @@ var gkGame = {
 	
 	//ссылки на карте
 	drawLink: function(){
+		if(!this.mapData) return;
 		var link = this.mapData.mapLink;
 		$('.gameLegend .wrap').html('');
-		$('.gameLegend .wrap').append(link);
+		if(link){
+			$('.gameLegend .wrap').append(link);
+		}
+		this.checkLink();
+	},
+	
+	//проверка активности добавления в друзья
+	checkLink: function(){
+		if(!this.mapData) return;
+		var link = this.mapData.mapLink;
+		//console.log(this.type);
+		//console.log(this.friends);
+		//console.log(this.mapData.ID);
 		if(this.type == 'player'){
 			if(this.friends.indexOf(this.mapData.ID) != -1){
-				$('.gameLegend .moreBtnMapFriendAdd').remove();
+				$('.gameLegend .moreBtnMapFriendAdd').hide();
 				$('.gameLegend .moreBtnMapFriendDelete').show();
+			}else{
+				$('.gameLegend .moreBtnMapFriendAdd').show();
+				$('.gameLegend .moreBtnMapFriendDelete').hide();
 			}
 		}
 	},
@@ -715,29 +788,37 @@ var gkGame = {
 		
 		if(notLoader) this.notCalcMode = true;
 		
-		mapData = this.mapData;
+		var mapData = this.mapData;
 		
 		this.setSq();
 		
 		if(this.type == 'player'){
 			
-			this.drawMap(mapData.mapImage);
-			this.drawLink();
-			
-			this.sortBuilds();
-		
-			for(k in this.mapData.dt){
-				var itm = this.mapData.dt[k];
-				this.drawBuild(itm);
+			if(this.setLoadMenu) {
+				this.moveMode = false;
+				this.setLoadMenu = false;
+				this.loadGameMenu(true,notLoader);
+				
+			}else{
+				this.moveMode = false;
+				this.drawMap(mapData.mapImage);
+				this.drawLink();
+				
+				this.sortBuilds();
+				var k;
+				for(k in this.mapData.dt){
+					var itm = this.mapData.dt[k];
+					this.drawBuild(itm);
+				}
+				
+				this.drawUnits();
+				this.drawName();
+				this.drawLevel();
+				this.drawReith();
+				this.drawRes();
+				this.hideGlobalTop();
+				
 			}
-			
-			this.drawUnits();
-			this.drawName();
-			this.drawLevel();
-			this.drawReith();
-			this.drawRes();
-			this.hideGlobalTop();
-			this.moveMode = false;
 			
 			
 		}else if(this.type == 'global'){
@@ -745,7 +826,7 @@ var gkGame = {
 			this.drawLink();
 			this.drawGlobalTop();
 			this.sortBuilds();
-			
+			var k;
 			for(k in this.mapData.dt){
 				var itm = this.mapData.dt[k];
 				this.drawBuild(itm);
@@ -756,7 +837,7 @@ var gkGame = {
 			this.drawLink();
 			this.hideGlobalTop();
 			this.sortBuilds();
-			
+			var k;
 			for(k in this.mapData.dt){
 				var itm = this.mapData.dt[k];
 				this.drawBuild(itm);
@@ -766,86 +847,6 @@ var gkGame = {
 		
 		this.loader.hideLoader(100);
 		
-	},
-	
-	//установка аватара
-	setAvatar: function(path){
-		if(path){
-			
-			$.ajax({
-					url: this.curUrl+"api/setAvatar.php",
-					data: {key: gkGame.autKey, path:path},
-					dataType : "html",
-					type: "POST",
-					success: function (data, textStatus) {
-						gkGame.loadGameMenu();
-					}
-			});
-			
-		}
-	},
-	
-	
-	//установка названия
-	setUsername: function(name){
-		//if(name){
-			
-			$.ajax({
-					url: this.curUrl+"api/setUsername.php",
-					data: {key: gkGame.autKey, name:name},
-					dataType : "html",
-					type: "POST",
-					success: function (data, textStatus) {
-						gkGame.loadGameMenu();
-						$('.setUsernameWrapper').html(data);
-					}
-			});
-			
-		//}
-	},
-	
-	//установка промо
-	setPromo: function(promo){
-		//if(name){
-			
-			$.ajax({
-					url: this.curUrl+"api/setPromo.php",
-					data: {key: gkGame.autKey, promo:promo},
-					dataType : "html",
-					type: "POST",
-					success: function (data, textStatus) {
-						gkGame.loadGameMenu();
-						$('.setPromoWrapper').html(data);
-					}
-			});
-			
-		//}
-	},
-	
-	//добавить друга
-	addFriend: function(user){
-		$.ajax({
-				url: this.curUrl+"api/addFriend.php",
-				data: {key: gkGame.autKey, USER_TO:user},
-				dataType : "html",
-				type: "POST",
-				success: function (data, textStatus) {
-					gkGame.loadItems();
-				}
-		});
-	},
-	
-	//удалить друга
-	deleteFriend: function(user){
-		$.ajax({
-				url: this.curUrl+"api/addFriend.php",
-				data: {key: gkGame.autKey, USER_TO:user, mode: 'delete'},
-				dataType : "html",
-				type: "POST",
-				success: function (data, textStatus) {
-					gkGame.loadItems();
-				}
-		});
 	},
 	
 	//список друзей
@@ -863,6 +864,7 @@ var gkGame = {
 					$('.bottomGameBlock .wrap2 .openMap').each(function(){
 						if($(this).attr('data-user')) gkGame.friends.push($(this).attr('data-user'));
 					});
+					gkGame.checkLink();
 					
 					gkGame.debug('loadItems, set friends',gkGame.friends);
 					
@@ -871,7 +873,7 @@ var gkGame = {
 	},
 	
 	//меню игрока
-	loadGameMenu: function(){
+	loadGameMenu: function(re_init,notLoader){
 		$.ajax({
 				url: this.curUrl+"api/getMenu.php",
 				data: {key: gkGame.autKey},
@@ -883,7 +885,20 @@ var gkGame = {
 					gkGame.debug('loadGameMenu and start setPublicChanel');
 					if($('.userMapItemAuth').length){
 						$('.bottomGameBlockTabsMenu .tabLink2').css({'display':'block'});
+						var activeUser = $('.userMapItemAuth .openMap').attr('data-user');
+						if(activeUser == gkGame.mapData.ID){
+							if($('.ratushaDisable').length){
+								var ht = '<div class="message-container"><img class="game-avatar" src="images/game_avatar/avatar-game-01.png"/><div class="message-blue message-error"><p class="message-content">Правитель, в любом королевстве должна быть ратуша!!!<br><a class="sendcommand button-yelow" data-command="build_01" href="#">построить ратушу</a></p><div class="message-left">...главный советник</div></div></div>';
+								modal.gameMessage(ht);
+							}
+						}
+						if(re_init){
+							gkGame.init_map(notLoader);
+						}
 					}else{
+						if(re_init){
+							gkGame.init_map(notLoader);
+						}
 						$('.bottomGameBlockTabsMenu .tabLink2').hide();
 					}
 				}
@@ -894,13 +909,14 @@ var gkGame = {
 	drawSetka: function(showAll){
 		this.moveMode = true;
 		
+		var k;
 		for(k in this.mapData.dt){
 			var itm = this.mapData.dt[k];
 			this.drawBuild(itm);
 		}
 		
 		this.moveCord = [];
-		
+		var k;
 		for (k in this.map_cords){
 			if(showAll || this.visible_sq[this.map_cords[k][2]]){
 				this.addStroke(this.map_cords[k][0],this.map_cords[k][1],this.ksizes.kw);
@@ -931,7 +947,7 @@ var gkGame = {
 		
 		this.viewport.addChild(line);
 		
-		delete line;
+		//delete line;
 		this.render.render();
 		
 	},
@@ -959,25 +975,37 @@ var gkGame = {
 			text.interactive = true;
 			text.buttonMode = true;
 			text.on('tap', function(event){
+				if(gkGame.draged) return;
 				if(gkGame.moveCord.length == 1 && gkGame.moveCord[0] == this._text){
 					gkGame.moveCord = [];
 				}else{
 					gkGame.moveCord.push(this._text);
 				}
 				if(gkGame.moveCord.length == 2){
+					gkGame.moveMode = false;
 					gkGame.sendCommand('move_'+gkGame.moveCord[0]+'_'+gkGame.moveCord[1],function(dt){
+						gkGame.moveMode = false;
+						$('.message-fixed-container .message-container').remove();
+						modal.gameMessage(dt.fixmess);
+						if(dt.audio) audio.play(dt.audio);
 						gkGame.loadMap(gkGame.mapData.ID,'player',true);
 					});
 				}
 			});
 			text.on('click', function(event){
+				if(gkGame.draged) return;
 				if(gkGame.moveCord.length == 1 && gkGame.moveCord[0] == this._text){
 					gkGame.moveCord = [];
 				}else{
 					gkGame.moveCord.push(this._text);
 				}
 				if(gkGame.moveCord.length == 2){
+					gkGame.moveMode = false;
 					gkGame.sendCommand('move_'+gkGame.moveCord[0]+'_'+gkGame.moveCord[1],function(dt){
+						gkGame.moveMode = false;
+						$('.message-fixed-container .message-container').remove();
+						modal.gameMessage(dt.fixmess);
+						if(dt.audio) audio.play(dt.audio);
 						gkGame.loadMap(gkGame.mapData.ID,'player',true);
 					});
 				}
@@ -986,7 +1014,7 @@ var gkGame = {
 		}
 		
 		this.viewport.addChild(text);
-		delete text;
+		//delete text;
 		this.render.render();
 		
 	},
@@ -1036,13 +1064,18 @@ var gkGame = {
 				type: "POST",
 				success: function (data, textStatus) {
 					
+					var previewMap = gkGame.mapData;
+					
 					gkGame.debug('инит карты',data);
 					gkGame.mapData = data;
+					
+					gkGame.checkAttack(previewMap);
 					
 					gkGame.pull.setChanel();
 					
 					if(data.hasOwnProperty('images') && data.images.length){
 						var addImages = [];
+						var k;
 						for(k in data.images){
 							var img_path = data.images[k];
 							if(!gkGame.getImageForName(img_path)){
@@ -1067,7 +1100,44 @@ var gkGame = {
 		
 	},
 	
-	
+	checkAttack: function(previewMap){
+		
+		if(!previewMap || !gkGame.mapData) return;
+		if(previewMap.ID != gkGame.mapData.ID) return;
+		if(!previewMap.hasOwnProperty('dt') || !gkGame.mapData.hasOwnProperty('dt')) return;
+		
+		var hash1 = 0;
+		var hash2 = 0;
+		
+		var k;
+		for(k in previewMap['dt']){
+			if(!!previewMap['dt'][k]['unit']){
+				var k2;
+				for(k2 in previewMap['dt'][k]['unit']){
+					hash1 += parseInt(k2)*parseInt(previewMap['dt'][k]['unit'][k2]);
+				}
+			}
+		}
+		
+		var k;
+		for(k in gkGame.mapData['dt']){
+			if(!!gkGame.mapData['dt'][k]['unit']){
+				var k2;
+				for(k2 in gkGame.mapData['dt'][k]['unit']){
+					hash2 += parseInt(k2)*parseInt(gkGame.mapData['dt'][k]['unit'][k2]);
+				}
+			}
+		}
+		
+		//console.log(hash1);
+		//console.log(hash2);
+		
+		if(hash1 != hash2){
+			audio.play('attack');
+			setTimeout(function(){audio.play('attack2')},1300);
+		}
+		
+	},
 	
 	//render wrapper
 	render: {
@@ -1137,13 +1207,14 @@ var gkGame = {
 						this.parent().debug('init chanell',chanelId);
 						this.pushstream_public = new PushStream({
 						  host: 'push.mlife.by',
-						  port: window.location.port,
+						  port: 443,
 						  modes: "websocket",
 						  tagArgument: 'tag',
 						  timeArgument: 'time',
 						  useJSONP: true,
 						  timeout: 30000000000,
 						  useSSL: true,
+						  backtrack:10
 						});
 						this.pushstream_public.addChannel(chanelId);
 						this.pushstream_public.onmessage = gkGame.pull.onmessage;
@@ -1171,13 +1242,14 @@ var gkGame = {
 				this.parent().debug('init chanell',this.parent().mapData.chanellId);
 				this.pushstream = new PushStream({
 				  host: 'push.mlife.by',
-				  port: window.location.port,
+				  port: 443,
 				  modes: "websocket",
 				  tagArgument: 'tag',
 				  timeArgument: 'time',
 				  useJSONP: true,
 				  timeout: 30000000000,
 				  useSSL: true,
+				  backtrack:10
 				});
 				this.pushstream.addChannel(this.parent().mapData.chanellId);
 				this.pushstream.onmessage = gkGame.pull.onmessage;
@@ -1241,8 +1313,13 @@ var gkGame = {
 		load: function(images, re_init){
 			if(this.loader === null || re_init) this.init();
 			
+			var k;
 			for (k in images){
-				this.loader.add(images[k], this.path+images[k]);
+				if(staticImages.hasOwnProperty(images[k])){
+					this.loader.add(images[k], staticImages[images[k]]);
+				}else{
+					this.loader.add(images[k], this.path+images[k]);
+				}
 			}
 			this.loader.load(function(loader, resources){});
 			this.loader.onProgress.add(function(e){
@@ -1297,9 +1374,13 @@ var gkGame = {
 			});
 		},
 		getCalcResultSet : function(){
-			var dt = $('#kalkform').serializeArray();
+			var dt = [];
+			$('#kalkform input').each(function(){
+				if($(this).attr('id')) dt.push({'name':$(this).attr('id'),'value':$(this).val()});
+			});
 			var val = [0,0];
 			
+			var k;
 			for(k in dt){
 				dt[k]['value'] = parseInt(dt[k]['value']);
 				if(isNaN(dt[k]['value'])) dt[k]['value'] = 0;
@@ -1319,3 +1400,5 @@ var gkGame = {
 	}
 	
 };
+
+export default gkGame;

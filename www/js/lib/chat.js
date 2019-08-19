@@ -1,3 +1,15 @@
+import { window, document } from 'ssr-window';
+import $ from './dom7_lib';
+import gkGame from './game';
+import Base64 from './base64';
+import audio from './audio';
+
+import ajaxWrapper from './wrapper/ajax';
+$.ajax = function(options){
+	ajaxWrapper(options);
+};
+
+
 var Cookies = require("cookies");
 var mlf_chat = {
 	CookiesWrap: {
@@ -14,18 +26,21 @@ var mlf_chat = {
 	},
 	pushstream: null,
 	mlf_chat_user: {},
-	ml_chatPath: 'https://g520.ru/game_yandex/chat/',
+	ml_chatPath: 'https://g520.ru/game.client.v.1/chat/',
 	lastreplay:[],
 	debug: false,
 	lastcheck: 0,
 	lastCord:false,
-	audio: [new Audio('https://g520.ru/upload/alice-sounds-game-ping-1.mp3')],
+	//audio: [new Audio('https://g520.ru/upload/alice-sounds-game-ping-1.mp3')],
 	playAudio:function(key){
-		if(!key) key = 0;
+		/*if(!key) key = 0;
 		this.audio[0].load();
 		setTimeout(function() {
 			mlf_chat.audio[0].play();
 		},0);
+		*/
+		if(!key) key = 'ping';
+		audio.play(key);
 	},
 	sortEnique: function(arr){
 		var res = [];
@@ -61,6 +76,7 @@ var mlf_chat = {
 			cur_cookie = [];
 		}
 		var new_c = [];
+		var k;
 		for(k in cur_cookie){
 			cur_cookie[k] = parseInt(cur_cookie[k]);
 			if((cur_cookie[k] > 0) && user){
@@ -123,11 +139,14 @@ var mlf_chat = {
 		var frm = {};
 		frm.from_user_id = $('#from_user_id').val();
 		frm.token = $('#chat_token').val();
-		var form_data = $('#chatWrapper .banForm').serializeArray();
+		//var form_data = {};
 		
-		for(k in form_data){
-			frm[form_data[k].name] = form_data[k].value;
-		}
+		$('#chatWrapper .banForm input, #chatWrapper .banForm select').each(function(){
+			var name = $(this).attr('name');
+			frm[name] = $(this).val();
+		});
+		
+		
 		if(mlf_chat.debug) console.log(frm);
 		frm['key'] = gkGame.autKey;
 		$.ajax({
@@ -157,6 +176,7 @@ var mlf_chat = {
 		if(mlf_chat.debug) console.log(mlf_chat.lastreplay);
 		if(mlf_chat.debug) console.log(name);
 		var pre_tex = '';
+		var k;
 		for(k in mlf_chat.lastreplay){
 			if(k<3) {
 				if(pre_tex.indexOf(mlf_chat.lastreplay[k]) === -1){
@@ -172,6 +192,8 @@ var mlf_chat = {
 		if(mlf_chat.debug) console.log([data, text, id, channel]);
 		
 		if(data.MODE == 'add'){
+			
+			mlf_chat.playAudio('mess');
 			
 			var addClass = '';
 			if(mlf_chat.mlf_chat_user.name){
@@ -202,16 +224,17 @@ var mlf_chat = {
 				'</div>'+
 			'</div>';
 			
-			var scrollH = $(".messages_active").get(0).scrollHeight - $(".messages_active").get(0).scrollTop - $(".messages_active").height();
-			
+			var ma = mlf_chat.getDomMessBlockActive();
+			var scrollH = 0;
+			if(ma){
+				scrollH = ma.scrollHeight - ma.scrollTop - $(".messages_active").height();
+			}
 			$('.chat_content .messages_'+data.USER_TO.userId+' .wrapp_mess').append(ht);
 			
 			if($('.chat_content .messages_'+data.USER_TO.userId).hasClass('messages_active')){
 			
-				if(scrollH <= 80){
-					$(".messages_active").animate({
-						scrollTop: $(".messages_active").get(0).scrollHeight
-					},50);
+				if(ma && scrollH <= 80){
+					$(".messages_active").scrollTop(ma.scrollHeight);
 				}
 			
 			}else{
@@ -228,9 +251,11 @@ var mlf_chat = {
 			
 			if((data.USER_TO == from_user_id) || (data.USER_FROM == from_user_id)){
 				
+				mlf_chat.playAudio('mess');
+				
 				var createMsgWrap = false;
 				
-				if($('#chatWrapper .messages').is('.messages_'+data.USER_TO)){
+				if($('#chatWrapper .messages_'+data.USER_TO).html()){
 					if(!$('#chat_room_'+data.USER_TO).hasClass('active')){
 						$('#chat_room_'+data.USER_TO).removeClass('new_mess').addClass('new_mess');
 						mlf_chat.playAudio();
@@ -245,7 +270,7 @@ var mlf_chat = {
 						createMsgWrap = true;
 					}
 				}
-				if($('#chatWrapper .messages').is('.messages_'+data.USER_FROM)){
+				if($('#chatWrapper .messages_'+data.USER_FROM).html()){
 					
 					if(!$('#chat_room_'+data.USER_FROM).hasClass('active')){
 						$('#chat_room_'+data.USER_FROM).removeClass('new_mess').addClass('new_mess');
@@ -273,6 +298,7 @@ var mlf_chat = {
 			
 		}else if(data.MODE == 'delete'){
 			
+			var k;
 			for(k in data.ID){
 				$('#item_mess_'+data.ID[k]).remove();
 			}
@@ -285,6 +311,7 @@ var mlf_chat = {
 			
 			$('#chatWrapper .chatUsers .wrapUsers .userItem').removeClass('userItem_online');
 			
+			var k;
 			for(k in data.USERS){
 				
 				var online = false;
@@ -293,7 +320,7 @@ var mlf_chat = {
 					online = true;
 				}
 				
-				if($('#chatWrapper .chatUsers .wrapUsers .userItem_'+data.USERS[k]['id']).is('.userItem')){
+				if($('#chatWrapper .chatUsers .wrapUsers .userItem_'+data.USERS[k]['id']).html()){
 					var t = new Date(data.USERS[k]['time']*1000);
 					$('#chatWrapper .chatUsers .wrapUsers .userItem_'+data.USERS[k]['id']+' a').html('<span class="date" data-time="'+data.USERS[k]['time']+'">'+((t.getHours()<10?'0':'')+t.getHours()+':'+(t.getMinutes()<10?'0':'')+t.getMinutes())+'</span> '+data.USERS[k]['name']);
 					$('#chatWrapper .chatUsers .wrapUsers .userItem_'+data.USERS[k]['id']+' a').attr('data-username',data.USERS[k]['name']);
@@ -327,6 +354,7 @@ var mlf_chat = {
 			return b[0] - a[0];
 		});
 		$('#chatWrapper .chatUsers .wrapUsers').html('');
+		var k;
 		for(k in newHtml){
 			$('#chatWrapper .chatUsers .wrapUsers').append(newHtml[k][1]);
 		}
@@ -361,7 +389,14 @@ var mlf_chat = {
 		}
 	},
 	chat_submit: function(){
-		var formData = $('#send_mess').serialize();
+		var formData = {};
+		
+		$('#send_mess input, #send_mess textarea').each(function(){
+			var name = $(this).attr('name');
+			formData[name] = $(this).val();
+		});
+		
+		
 		$('#chatWrapper .chat_send').append('<div class="preload"><div class="load"></div></div>');
 		formData['key'] = gkGame.autKey;
 		$.ajax({
@@ -374,9 +409,11 @@ var mlf_chat = {
 				if(mlf_chat.debug) console.log(data);
 				if(data.RES == 'OK'){
 					$('#chat_text').val('');
-					$(".messages_active").animate({
-						scrollTop: $(".messages_active").get(0).scrollHeight
-					},300);
+					var ma = mlf_chat.getDomMessBlockActive();
+					if(ma){
+						$(".messages_active").scrollTop(ma.scrollHeight);
+					}
+					
 					mlf_chat.lastreplay = [];
 					
 					$('#chatWrapper .photo_btn a').removeClass('active');
@@ -426,9 +463,9 @@ var mlf_chat = {
 						if($(window).width()>=640){
 							if(cur_cookie[0]>$(window).height()) cur_cookie[0] = 20;
 							if(cur_cookie[1]>$(window).width()) cur_cookie[1] = 20;
-							$("#chatMainWrapper").css({'top':cur_cookie[0]+'px','left':cur_cookie[1]+'px','width':cur_cookie[2]+'px','height':cur_cookie[3]+'px'});
+							//$("#chatMainWrapper").css({'top':cur_cookie[0]+'px','left':cur_cookie[1]+'px','width':cur_cookie[2]+'px','height':cur_cookie[3]+'px'});
 							var checkPos = mlf_chat.checkPosition(cur_cookie[0], cur_cookie[1]);
-							$("#chatMainWrapper").css({'top':checkPos[0]+'px','left':checkPos[1]+'px'});
+							//$("#chatMainWrapper").css({'top':checkPos[0]+'px','left':checkPos[1]+'px'});
 							mlf_chat.lastCord = cur_cookie;
 						}
 					}
@@ -458,9 +495,16 @@ var mlf_chat = {
 		//var checkPos = mlf_chat.checkPosition($("#chatMainWrapper").offset().top, $("#chatMainWrapper").offset().left);
 		//$("#chatMainWrapper").css({'top':checkPos[0]+'px','left':checkPos[1]+'px'});
 	},
+	getDomMessBlockActive: function(){
+		var messages_active = document.getElementsByClassName("messages_active");
+		if(messages_active.length){
+			return document.getElementsByClassName("messages_active")[0];
+		}
+		return false;
+	},
 	getMessFromId: function(user, user_to, id){
 		if(mlf_chat.debug) console.log([user, user_to, id]);
-		var first = $('.messages_'+user+' .wrapp_mess .item').first();
+		var first = $('.messages_'+user+' .wrapp_mess .item').eq(0);
 		if(first){
 			var from_user_id = $('#from_user_id').val();
 			var token = $('#chat_token').val();
@@ -472,13 +516,16 @@ var mlf_chat = {
 				type: "POST",
 				cache: false,
 				success: function (data, textStatus) {
-					var scrollH = $(".messages_active").get(0).scrollHeight - $(".messages_active").get(0).scrollTop - $(".messages_active").height();
+					
+					var ma = mlf_chat.getDomMessBlockActive();
+					var scrollH = 0;
+					if(ma){
+						scrollH = ma.scrollHeight - ma.scrollTop - $(".messages_active").height();
+					}
 					$('.messages_'+user+' .wrapp_mess').append(data);
 					
-					if(scrollH <= 80){
-						$(".messages_active").animate({
-							scrollTop: $(".messages_active").get(0).scrollHeight
-						},50);
+					if(ma && scrollH <= 80){
+						$(".messages_active").scrollTop(ma.scrollHeight);
 					}
 					
 				},
@@ -490,10 +537,11 @@ var mlf_chat = {
 		}
 	},
 	getStartPage: function(user){
-		
+		//console.log(user);
 		$('.messages_'+user+' .wrapp_mess .load_more').remove();
 		
-		var first = $('.messages_'+user+' .wrapp_mess .item').first();
+		var first = $('.messages_'+user+' .wrapp_mess .item').eq(0);
+		//console.log(first);
 		var lastId = 0;
 		if(first){
 			lastId = first.attr('data-id');
@@ -511,18 +559,19 @@ var mlf_chat = {
 			cache: false,
 			success: function (data, textStatus) {
 				$('.messages_'+user+' .wrapp_mess').prepend(data);
+				var ma = mlf_chat.getDomMessBlockActive();
 				if(!lastId){
-					$(".messages_active").animate({
-						scrollTop: $(".messages_active").get(0).scrollHeight
-					},300);
+					if(ma) $(".messages_active").scrollTop(ma.scrollHeight);
 				}else{
-					var scrollH = $(".messages_active").get(0).scrollHeight - $(".messages_active").get(0).scrollTop - $(".messages_active").height();
-					if(scrollH <= 80){
-						$(".messages_active").animate({
-							scrollTop: $(".messages_active").get(0).scrollHeight
-						},50);
+					var scrollH = 0;
+					if(ma){
+						scrollH = ma.scrollHeight - ma.scrollTop - $(".messages_active").height();
+					}
+					if(ma && scrollH <= 80){
+						$(".messages_active").scrollTop(ma.scrollHeight);
 					}
 				}
+				mlf_chat.setSizes();
 				
 			},
 			error: function (){
@@ -534,9 +583,11 @@ var mlf_chat = {
 		var from_user_id = $('#chatWrapper').attr('data-user');
 		var token = $('#chatWrapper').attr('data-token');
 		
+		var cur_cookie = mlf_chat.CookiesWrap.get('BITRIX_SM_LAST_USERS_CHAT');
+		
 		$.ajax({
 			url: mlf_chat.ml_chatPath+'ajax/getActiveChat.php',
-			data: {key: gkGame.autKey, from_user_id: from_user_id, token: token},
+			data: {key: gkGame.autKey, from_user_id: from_user_id, token: token, LAST_USERS_CHAT: cur_cookie},
 			dataType : "html",
 			type: "POST",
 			cache: false,
@@ -554,12 +605,14 @@ var mlf_chat = {
 				});
 				
 				mlf_chat.checkDel();
-				setTimeout(function(){
+				//setTimeout(function(){
 					mlf_chat.setSizes();
-				},500);
-				$(".messages_active").animate({
-					scrollTop: $(".messages_active").get(0).scrollHeight
-				},300);
+				//},500);
+				var ma = mlf_chat.getDomMessBlockActive();
+				if(ma){
+					$(".messages_active").scrollTop(ma.scrollHeight);
+				}
+				
 				
 				$('#send_mess').keypress(function (e) {
 				  if (e.which == 13) {
@@ -571,7 +624,7 @@ var mlf_chat = {
 				mlf_chat.checkDate();
 				
 				if(!mlf_chat.mlf_chat_user.id) mlf_chat.setGuestMode();
-				
+				//debugger;
 			},
 			error: function (){
 				
@@ -580,13 +633,13 @@ var mlf_chat = {
 		
 	},
 	showError: function(text){
-		ht = '<a href="#" class="close">закрыть</a><div class="errorMsg">'+text+'</div>';
+		var ht = '<a href="#" class="close">закрыть</a><div class="errorMsg">'+text+'</div>';
 		$('#chatWrapper .showItemMenu .wrap').html(ht);
 		$('#chatWrapper .showItemMenu').addClass('active');
 	},
 	init: function(){
 		mlf_chat.getActiveChat();
-		mlf_chat.setSizes();
+		
 		if($("#chatWrapper").attr('data-move')==1){
 			var cur_cookie = mlf_chat.CookiesWrap.get('BITRIX_SM_LAST_USERS_CHAT_OPEN');
 			if(cur_cookie == '1'){
@@ -623,7 +676,7 @@ var mlf_chat = {
 		$('#chatWrapper .chat_room').hide();
 		$('#chatWrapper .chat_send').html('<a href="#" class="guestBtn toLevel1" data-page="login/" title="вход в игру">вход в игру</a>');
 	},
-	loadChat: function(){
+	loadChat: function(){ //старт загрузки чата
 		
 		$.ajax({
 				url: gkGame.curUrl+"chat/load.php",
@@ -652,36 +705,8 @@ var mlf_chat = {
 						$( "#chatMainWrapper" ).css({'position':'fixed','bottom':'0px','left':'0px;','width':'100%','height':($(window).height()-120)+'px','max-height':($(window).height()-120)+'px'});
 					}else{
 					
-						$( "#chatMainWrapper" ).css({'position':'fixed','top':'40px','left':'20px;','width':'300px','height':($(window).height()-200)+'px'});
-						/*$( "#chatMainWrapper" ).resizable({
-							maxHeight: h,
-							maxWidth:480,
-							minHeight:300,
-							minWidth:320,
-							resize: function( event, ui ) {
-								var pos = mlf_chat.checkPosition(ui.position.top,ui.position.left);
-								ui.position.top = pos[0];
-								ui.position.left = pos[1];
-								mlf_chat.lastCordLock = true;
-							},
-							stop: function(event, ui){
-								mlf_chat.setCord();
-								mlf_chat.lastCordLock = false;
-							}
-						});
-						$('#chatMainWrapper').draggable({
-							handle: ".top_row",
-							opacity: 0.8,
-							drag: function( event, ui ) {
-								var pos = mlf_chat.checkPosition(ui.position.top,ui.position.left);
-								ui.position.top = pos[0];
-								ui.position.left = pos[1];
-							},
-							stop: function(event, ui){
-								mlf_chat.setCord();
-							}
-						});
-						*/
+						$( "#chatMainWrapper" ).css({'position':'fixed','top':'20px','right':'20px','width':'320px','height':($(window).height()-200)+'px'});
+						
 						$( "#chatMainWrapper" ).on( "resize", function( event, ui ) {
 							//mlf_chat.lastCord = null;
 							
@@ -692,13 +717,14 @@ var mlf_chat = {
 					
 					mlf_chat.pushstream = new PushStream({
 					  host: 'push.mlife.by',
-					  port: window.location.port,
+					  port: 443,
 					  modes: "websocket",
 					  tagArgument: 'tag',
 					  timeArgument: 'time',
 					  useJSONP: true,
 					  timeout: 30000000000,
 					  useSSL: true,
+					  backtrack:10
 					});
 					mlf_chat.pushstream.onmessage = mlf_chat.message;
 					mlf_chat.pushstream.addChannel($('#chatWrapper').attr('data-chanel'));
@@ -716,11 +742,31 @@ var mlf_chat = {
 	},
 	initHandlers: function(){
 		
+			$(document).on('click','#chatWrapper .load_more a',function(e){
+				e.preventDefault();
+				//console.log($(this));
+				var chat = $(this).attr('data-chat');
+				mlf_chat.getStartPage(chat);
+			});
+			
+			$(document).on('click','.closeChat',function(e){
+				e.preventDefault();
+				$('#chatMainWrapper').hide();
+				mlf_chat.CookiesWrap.set('BITRIX_SM_LAST_USERS_CHAT_OPEN', '0', {expires: 30});
+				$('.chatHeadBtn').show();
+				mlf_chat.setSizes();
+			});
+			$(document).on('click','.send_chat_mess',function(e){
+				e.preventDefault();
+				mlf_chat.chat_submit();
+			});
+			
 			$(document).on('click','.chatHeadBtn a',function(e){
 				e.preventDefault();
 				$('#chatMainWrapper').show();
 				$('.chatHeadBtn').hide();
 				mlf_chat.CookiesWrap.set('BITRIX_SM_LAST_USERS_CHAT_OPEN', 1, {expires: 30});
+				mlf_chat.setSizes();
 			});
 
 			$(document).on('click','#chatWrapper .chat_room a.active .close',function(){
@@ -777,6 +823,7 @@ var mlf_chat = {
 				e.preventDefault();
 				$('#chatWrapper .showItemMenu').removeClass('active');
 				//Cookies.set('BITRIX_SM_LAST_USERS_CHAT_OPEN', '0', {expires: 30});
+				mlf_chat.setSizes();
 			});
 			
 			$(document).on('click','#chatWrapper .openMap',function(e){
@@ -789,8 +836,8 @@ var mlf_chat = {
 				
 				var ht = '';
 				ht += '<a href="#" class="close">закрыть</a><div class="userWrap"><div class="name">'+$(this).attr('data-username')+'</div>'+
-				'<div class="userNumber">номер королевства: '+$(this).attr('href').replace('https://g520.ru/?id=','')+'</div>'+
-				'<ul><li><a href="#" class="openMap" data-user="'+$(this).attr('href').replace('https://g520.ru/?id=','')+'">посмотреть карту</li>';
+				'<div class="userNumber">номер королевства: '+$(this).attr('href').replace('https://g520.ru/','').replace('?id=','')+'</div>'+
+				'<ul><li><a href="#" class="openMap" data-user="'+$(this).attr('href').replace('https://g520.ru/','').replace('?id=','')+'">посмотреть карту</li>';
 				
 				if(mlf_chat.mlf_chat_user.id && $(this).attr('data-user') != mlf_chat.mlf_chat_user.id){
 					ht += '<li><a class="lsChat" href="#" data-id="'+$(this).attr('data-user')+'" data-name="'+$(this).attr('data-username')+'">личный чат</a></li>';
@@ -817,8 +864,8 @@ var mlf_chat = {
 				
 				var ht = '';
 				ht += '<a href="#" class="close">закрыть</a><div class="userWrap"><div class="name">'+item.attr('data-username')+'</div>'+
-				'<div class="userNumber">номер королевства: '+item.find('.name').attr('href').replace('https://g520.ru/?id=','')+'</div>'+
-				'<ul><li><a href="#" class="openMap" data-user="'+item.find('.name').attr('href').replace('https://g520.ru/?id=','')+'">посмотреть карту</li>';
+				'<div class="userNumber">номер королевства: '+item.find('.name').attr('href').replace('https://g520.ru/','').replace('?id=','')+'</div>'+
+				'<ul><li><a href="#" class="openMap" data-user="'+item.find('.name').attr('href').replace('https://g520.ru/','').replace('?id=','')+'">посмотреть карту</li>';
 				
 				if(mlf_chat.mlf_chat_user.id && item.attr('data-user') != mlf_chat.mlf_chat_user.id){
 					ht += '<li><a class="lsChat" href="#" data-id="'+item.attr('data-user')+'" data-name="'+item.attr('data-username')+'">личный чат</a></li>';
@@ -848,8 +895,9 @@ var mlf_chat = {
 			$(document).on('click','#chatWrapper .lsChat',function(e){
 				e.preventDefault();
 				var user = $(this).attr('data-id');
-				
-				if($('#chatWrapper .messages').is('.messages_'+user)){
+				//console.log('#chatWrapper .lsChat');
+				//debugger;
+				if($('#chatWrapper .messages_'+user).html()){
 					$('#chatWrapper .messages').removeClass('messages_active');
 					$('#chatWrapper .chat_room a').removeClass('active');
 					$('#chatWrapper #chat_room_'+user).addClass('active');
@@ -877,7 +925,7 @@ var mlf_chat = {
 				var user = $(this).attr('data-id');
 				
 				var ht = '';
-				ht += '<a href="#" class="close">закрыть</a><form class="banForm" onsubmit="mlf_chat.banUser();return false;"><input type="hidden" name="user" value="'+user+'"/><select name="time">';
+				ht += '<a href="#" class="close">закрыть</a><form class="banForm" onsubmit="return false;"><input type="hidden" name="user" value="'+user+'"/><select name="time">';
 				ht += '<option value="30">разблокировать</option>';
 				ht += '<option value="600">10 минут</option>';
 				ht += '<option value="900">15 минут</option>';
@@ -891,37 +939,17 @@ var mlf_chat = {
 				ht += '<option value="259200">3 дня</option>';
 				ht += '<option value="604800">1 неделя</option>';
 				ht += '<option value="1209600">2 недели</option>';
-				ht += '</select><input type="text" name="povod" value="" placeholder="причина"/><input type="submit" class="submit" name="submit" value="подтвердить"/></form>';
+				ht += '</select><input type="text" name="povod" value="" placeholder="причина"/><a href="#" class="submit" name="submit">подтвердить</a></form>';
 				
 				$('#chatWrapper .showItemMenu .wrap').html(ht);
 				
+			});
+			
+			$(document).on('click','.banForm .submit',function(e){
+				e.preventDefault();
+				mlf_chat.banUser();
 			});
 
-			$(document).on('click','.toBanUser',function(e){
-				e.preventDefault();
-				
-				var user = $(this).attr('data-id');
-				
-				var ht = '';
-				ht += '<a href="#" class="close">закрыть</a><form class="banForm" onsubmit="mlf_chat.banUser();return false;"><input type="hidden" name="user" value="'+user+'"/><select name="time">';
-				ht += '<option value="30">разблокировать</option>';
-				ht += '<option value="600">10 минут</option>';
-				ht += '<option value="900">15 минут</option>';
-				ht += '<option value="1800">30 минут</option>';
-				ht += '<option value="3600">1 час</option>';
-				ht += '<option value="14400">4 часа</option>';
-				ht += '<option value="28800">8 часов</option>';
-				ht += '<option value="43200">12 часов</option>';
-				ht += '<option value="86400">1 день</option>';
-				ht += '<option value="172800">2 дня</option>';
-				ht += '<option value="259200">3 дня</option>';
-				ht += '<option value="604800">1 неделя</option>';
-				ht += '<option value="1209600">2 недели</option>';
-				ht += '</select><input type="text" name="povod" value="" placeholder="причина"/><input type="submit" class="submit" name="submit" value="подтвердить"/></form>';
-				
-				$('#chatWrapper .showItemMenu .wrap').html(ht);
-				
-			});
 			
 			$(document).on('click','#chatWrapper .showUserList',function(e){
 				e.preventDefault();
@@ -963,7 +991,7 @@ var mlf_chat = {
 				}
 				mlf_chat.setSizes();
 			});
-			$(window).on('orientationchange',function() {
+			window.addEventListener("orientationchange", function() {
 				if(!mlf_chat.lastCordLock){
 				mlf_chat.lastCord = null;
 				}
@@ -973,3 +1001,4 @@ var mlf_chat = {
 	}
 };
 
+export default mlf_chat;

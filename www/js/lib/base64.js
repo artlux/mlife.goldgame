@@ -1,6 +1,6 @@
 var Base64 = {
    _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-   //метод для кодировки в base64 на javascript
+   //РјРµС‚РѕРґ РґР»СЏ РєРѕРґРёСЂРѕРІРєРё РІ base64 РЅР° javascript
   encode : function (input) {
 	var output = "";
 	var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
@@ -26,7 +26,7 @@ var Base64 = {
 	return output;
   },
  
-   //метод для раскодировки из base64
+   //РјРµС‚РѕРґ РґР»СЏ СЂР°СЃРєРѕРґРёСЂРѕРІРєРё РёР· base64
   decode : function (input) {
 	var output = "";
 	var chr1, chr2, chr3;
@@ -52,7 +52,7 @@ var Base64 = {
    output = Base64._utf8_decode(output);
 	 return output;
    },
-   // метод для кодировки в utf8
+   // РјРµС‚РѕРґ РґР»СЏ РєРѕРґРёСЂРѕРІРєРё РІ utf8
   _utf8_encode : function (string) {
 	string = string.replace(/\r\n/g,"\n");
 	var utftext = "";
@@ -73,10 +73,11 @@ var Base64 = {
  
   },
  
-  //метод для раскодировки из urf8
+  //РјРµС‚РѕРґ РґР»СЏ СЂР°СЃРєРѕРґРёСЂРѕРІРєРё РёР· urf8
   _utf8_decode : function (utftext) {
 	var string = "";
 	var i = 0;
+	var c1, c2;
 	var c = c1 = c2 = 0;
 	while( i < utftext.length ){
 	  c = utftext.charCodeAt(i);
@@ -97,3 +98,5 @@ var Base64 = {
 	 return string;
   }
 }
+
+export default Base64;

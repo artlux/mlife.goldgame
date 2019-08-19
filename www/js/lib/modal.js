@@ -1,260 +1,242 @@
-/* =========================================================
- * bootstrap-modal.js v1.4.0
- * http://twitter.github.com/bootstrap/javascript.html#modal
- * =========================================================
- * Copyright 2011 Twitter, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================= */
-
-
-!function( $ ){
-
-  "use strict"
-
- /* CSS TRANSITION SUPPORT (https://gist.github.com/373874)
-  * ======================================================= */
-
-  var transitionEnd
-
-  $(document).ready(function () {
-
-    $.support.transition = (function () {
-      var thisBody = document.body || document.documentElement
-        , thisStyle = thisBody.style
-        , support = thisStyle.transition !== undefined || thisStyle.WebkitTransition !== undefined || thisStyle.MozTransition !== undefined || thisStyle.MsTransition !== undefined || thisStyle.OTransition !== undefined
-      return support
-    })()
-
-    // set CSS transition event type
-    if ( $.support.transition ) {
-      transitionEnd = "TransitionEnd"
-      if ( $.browser.webkit ) {
-      	transitionEnd = "webkitTransitionEnd"
-      } else if ( $.browser.mozilla ) {
-      	transitionEnd = "transitionend"
-      } else if ( $.browser.opera ) {
-      	transitionEnd = "oTransitionEnd"
-      }
-    }
-
-  })
-
-
- /* MODAL PUBLIC CLASS DEFINITION
-  * ============================= */
-
-  var Modal = function ( content, options ) {
-    this.settings = $.extend({}, $.fn.modal.defaults, options)
-    this.$element = $(content)
-      .delegate('.close', 'click.modal', $.proxy(this.hide, this))
-
-    if ( this.settings.show ) {
-      this.show()
-    }
-
-    return this
-  }
-
-  Modal.prototype = {
-
-      toggle: function () {
-        return this[!this.isShown ? 'show' : 'hide']()
-      }
-
-    , show: function () {
-        var that = this
-        this.isShown = true
-        this.$element.trigger('show')
-
-        escape.call(this)
-        backdrop.call(this, function () {
-          var transition = $.support.transition && that.$element.hasClass('fade')
-
-          that.$element
-            .appendTo(document.body)
-            .show()
-
-          if (transition) {
-            that.$element[0].offsetWidth // force reflow
-          }
-
-          that.$element.addClass('in')
-
-          transition ?
-            that.$element.one(transitionEnd, function () { that.$element.trigger('shown') }) :
-            that.$element.trigger('shown')
-
-        })
-
-        return this
-      }
-
-    , hide: function (e) {
-        e && e.preventDefault()
-
-        if ( !this.isShown ) {
-          return this
-        }
-
-        var that = this
-        this.isShown = false
-
-        escape.call(this)
-
-        this.$element
-          .trigger('hide')
-          .removeClass('in')
-
-        $.support.transition && this.$element.hasClass('fade') ?
-          hideWithTransition.call(this) :
-          hideModal.call(this)
-
-        return this
-      }
-
-  }
-
-
- /* MODAL PRIVATE METHODS
-  * ===================== */
-
-  function hideWithTransition() {
-    // firefox drops transitionEnd events :{o
-    var that = this
-      , timeout = setTimeout(function () {
-          that.$element.unbind(transitionEnd)
-          hideModal.call(that)
-        }, 500)
-
-    this.$element.one(transitionEnd, function () {
-      clearTimeout(timeout)
-      hideModal.call(that)
-    })
-  }
-
-  function hideModal (that) {
-    this.$element
-      .hide()
-      .trigger('hidden')
-
-    backdrop.call(this)
-  }
-
-  function backdrop ( callback ) {
-    var that = this
-      , animate = this.$element.hasClass('fade') ? 'fade' : ''
-    if ( this.isShown && this.settings.backdrop ) {
-      var doAnimate = $.support.transition && animate
-
-      this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
-        .appendTo(document.body)
-
-      if ( this.settings.backdrop != 'static' ) {
-        this.$backdrop.click($.proxy(this.hide, this))
-      }
-
-      if ( doAnimate ) {
-        this.$backdrop[0].offsetWidth // force reflow
-      }
-
-      this.$backdrop.addClass('in')
-
-      doAnimate ?
-        this.$backdrop.one(transitionEnd, callback) :
-        callback()
-
-    } else if ( !this.isShown && this.$backdrop ) {
-      this.$backdrop.removeClass('in')
-
-      $.support.transition && this.$element.hasClass('fade')?
-        this.$backdrop.one(transitionEnd, $.proxy(removeBackdrop, this)) :
-        removeBackdrop.call(this)
-
-    } else if ( callback ) {
-       callback()
-    }
-  }
-
-  function removeBackdrop() {
-    this.$backdrop.remove()
-    this.$backdrop = null
-  }
-
-  function escape() {
-    var that = this
-    if ( this.isShown && this.settings.keyboard ) {
-      $(document).bind('keyup.modal', function ( e ) {
-        if ( e.which == 27 ) {
-          that.hide()
-        }
-      })
-    } else if ( !this.isShown ) {
-      $(document).unbind('keyup.modal')
-    }
-  }
-
-
- /* MODAL PLUGIN DEFINITION
-  * ======================= */
-
-  $.fn.modal = function ( options ) {
-    var modal = this.data('modal')
-
-    if (!modal) {
-
-      if (typeof options == 'string') {
-        options = {
-          show: /show|toggle/.test(options)
-        }
-      }
-
-      return this.each(function () {
-        $(this).data('modal', new Modal(this, options))
-      })
-    }
-
-    if ( options === true ) {
-      return modal
-    }
-
-    if ( typeof options == 'string' ) {
-      modal[options]()
-    } else if ( modal ) {
-      modal.toggle()
-    }
-
-    return this
-  }
-
-  $.fn.modal.Modal = Modal
-
-  $.fn.modal.defaults = {
-    backdrop: false
-  , keyboard: false
-  , show: false
-  }
-
-
- /* MODAL DATA- IMPLEMENTATION
-  * ========================== */
-
-  $(document).ready(function () {
-    $('body').delegate('[data-controls-modal]', 'click', function (e) {
-      e.preventDefault()
-      var $this = $(this).data('show', true)
-      $('#' + $this.attr('data-controls-modal')).modal( $this.data() )
-    })
-  })
-
-}( window.jQuery || window.ender );
+import { window, document } from 'ssr-window';
+import gkGame from './game';
+import audio from './audio';
+import app from './../app';
+
+import ajaxWrapper from './wrapper/ajax';
+
+import $ from './dom7_lib';
+$.ajax = function(options){
+	ajaxWrapper(options);
+};
+
+let modal = {};
+
+modal.loader_template = function(){
+	return '<div class="preload"><div class="load"></div></div>';
+};
+
+modal.template = function(){
+	
+	let ht = '<div class="modal-content">'+
+		this.loader_template()+
+		'<div class="modal-header">'+
+			'<button type="button" class="close">&times;</button>'+
+			'<h4 class="modal-title"></h4>'+
+		'</div>'+
+		'<div class="modal-body"></div>'+
+    '</div>';
+	
+	return ht;
+};
+
+modal.hide = function(){
+	$('#contentModal').hide();
+};
+
+modal.show = function(current){
+	$('#contentModal').show();
+	if(!current){
+		$('.contentModalWrapper').append(this.template());
+	}else{
+		var len = $('#contentModal .modal-content').length;
+		if(!len) {
+			$('.contentModalWrapper').append(this.template());
+		}else{
+			let i = 0;
+			$('#contentModal .modal-content').each(function(){
+				i += 1;
+				if(i == len){
+					$('#contentModal .modal-content').prepend(this.loader_template());
+				}
+			});
+		}
+		
+	}
+	$('.modal .modal-body').css({'height':$('#contentModal').attr('data-height')+'px'});
+	this.sorting();
+};
+
+modal.setContent = function(content){
+	var len = $('#contentModal .modal-content').length;
+	if(len){
+		let i = 0;
+		$('#contentModal .modal-content').each(function(){
+			i += 1;
+			if(len == i) {
+				$(this).find('.modal-body').html('<div class="wrapContentBg">'+content+'</div>');
+				$(this).find('.preload').remove();
+				if($(this).find('.meta-modal-title')){
+					if($(this).find('.meta-modal-title').attr('content')){
+						modal.setTitle($(this).find('.meta-modal-title').attr('content'));
+					}
+					
+					if($(this).find('script').length){
+						$(this).find('script').each(function(){
+							//console.log($(this).html());
+							app.ev($(this).html());
+						});
+					}
+					
+				}
+			}
+		});
+	}else{
+		$('#contentModal').hide();
+	}
+};
+
+modal.setTitle = function(title){
+	var len = $('#contentModal .modal-content').length;
+	if(len){
+		let i = 0;
+		$('#contentModal .modal-content').each(function(){
+			i += 1;
+			if(len == i) {
+				$(this).find('.modal-title').html(title);
+			}
+		});
+	}
+};
+
+modal.sorting = function(){
+	var start_zindex = 0;
+	var len = $('#contentModal .modal-content').length;
+	$('#contentModal .modal-content').each(function(){
+		start_zindex +=1;
+		if(start_zindex<len) {
+			$(this).hide();
+		}else{
+			$(this).show();
+		}
+	});
+	if(len<1) $('#contentModal').hide();
+};
+
+modal.remove = function(){
+	this.hide();
+	$('#contentModal .modal-content').remove();
+};
+
+modal.gameMessage = function(content){
+	$('.message-fixed-container').append(content);
+	$('.message-fixed-container').show();
+};
+
+modal.handlers = function(){
+	
+	$(document).on('click','.modal .close',function(e){
+		e.preventDefault();
+		audio.play('close');
+		$(this).parents('.modal-content').remove();
+		modal.sorting();
+	});
+	
+	$(document).on('click','.message-container .close',function(e){
+		e.preventDefault();
+		audio.play('close');
+		$(this).parents('.message-container').remove();
+		if(!$('.message-fixed-container .message-container').length){
+			$('.message-fixed-container').hide();
+		}
+	});
+	
+	$(document).on('click','.closeBuild',function(e){
+		if(!!e) e.preventDefault();
+		audio.play('close');
+		$('.modalBuild').hide();
+	});
+	
+	$(document).on('click','.showModal, .toLevel1',function(e){
+		if(!!e) e.preventDefault();
+		var url = $(this).attr('data-page');
+		if(url){
+			
+			var audio_alias = $(this).attr('data-audio');
+			if(audio_alias) 
+				audio.play(audio_alias);
+			
+			if($(this).attr('data-current')){
+				modal.show(true);
+			}else{
+				modal.show();
+			}
+			
+			if($(this).attr('data-title')){
+				modal.setTitle($(this).attr('data-title'));
+			}else if($(this).attr('title')){
+				modal.setTitle($(this).attr('title'));
+			}
+			
+			$.ajax({
+				url: gkGame.curUrl + '' + url,
+				data: {key: gkGame.autKey},
+				dataType : "text",
+				type: "POST",
+				success: function (data, textStatus) {
+					modal.setContent(data);
+				}
+			});
+			
+		}
+	});
+	
+	$(document).on('click','.showModalBuild',function(e){
+		if(!!e) e.preventDefault();
+		var title = $(this).attr('title');
+		var url = $(this).attr('data-page');
+		
+		var audio_alias = $(this).attr('data-audio');
+		if(audio_alias) 
+			audio.play(audio_alias);
+		
+		modal.showBuildFromUrl(url,title);
+	});
+	
+};
+
+modal.showBuildFromUrl = function(url,title){
+	
+	$('.modalBuild .buildContentWrap').html(modal.loader_template());
+	$('.modalBuild .titleBuild .name').html(title);
+	$('.modalBuild').show();
+	$('.modalBuild .buildContentWrap').css({'height':$('.modalBuild .content').height()+'px'});
+	
+	var addpost = {
+		key: gkGame.autKey
+	};
+	
+	if(url == 'api/settings/sound/'){
+		var k;
+		for(k in audio.volume){
+			addpost[k] = audio.volume[k];
+		}
+	}
+	//console.log(addpost);
+	$.ajax({
+		url: gkGame.curUrl + '' + url,
+		data: addpost,
+		dataType : "text",
+		type: "POST",
+		success: function (data, textStatus) {
+			$('.modalBuild .buildContentWrap').html('<div class="wrapContentBg">'+data+'</div>');
+		}
+	});
+};
+
+modal.showBuildContent = function(content,title){
+	$('.modalBuild .buildContentWrap').html(modal.loader_template());
+	$('.modalBuild .titleBuild .name').html(title);
+	$('.modalBuild').show();
+	$('.modalBuild .buildContentWrap').css({'height':$('.modalBuild .content').height()+'px'});
+	
+	$('.modalBuild .buildContentWrap').html('<div class="wrapContentBg">'+content+'</div>');
+};
+
+modal.init = function(){
+	modal.handlers();
+	modal.sorting();
+	//debugger;
+};
+
+export default modal;
