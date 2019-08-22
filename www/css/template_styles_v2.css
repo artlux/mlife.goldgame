@@ -526,9 +526,9 @@ text-decoration:none;clear:both;}
 .bottomGameBlockWrap {display:block;position:absolute;bottom:0;left:0;width:100%;z-index:2;}
 .bottomGameBlockWrap .hideTab, .bottomGameBlockWrap .hideTab:hover {display:block;height:32px;width:32px;line-height:32px;padding:0;font-size:20px;font-weight:bold;text-decoration:none;color:#44231a;
 border:1px solid #44231a;background:#ffffff;cursor:pointer;background:#44231a;color:#ffffff;float:right;text-align:center;}
-.bottomGameBlockTabsMenu {display:block;height:32px;overflow:hidden;clear:both;}
+.bottomGameBlockTabsMenu {display:block;height:30px;overflow:hidden;clear:both;}
 .bottomGameBlockTabsMenu li {float:left;display:block;}
-.bottomGameBlockTabsMenu li span {display:block;height:32px;line-height:32px;padding:0 10px;font-size:14px;text-decoration:none;color:#44231a;border:1px solid #44231a;background:#ffffff;cursor:pointer;}
+.bottomGameBlockTabsMenu li span {display:block;height:30px;line-height:30px;padding:0 5px;font-size:14px;text-decoration:none;color:#44231a;border:1px solid #44231a;background:#ffffff;cursor:pointer;}
 .bottomGameBlockTabsMenu li span.active {background:#44231a;color:#ffffff;}
 .bottomGameBlock {display:block;height:142px;clear:both;overflow:hidden;width:100%;overflow-x:scroll;background:#44231a;padding-top:5px;font-family: 'Open Sans', sans-serif;}
 .bottomGameBlock::-webkit-scrollbar-thumb{background:#ffffff;}
@@ -759,8 +759,10 @@ ul.buildTabs li {display:inline-block;}
 .buildTab_3 .unit_3 {border:1px solid #ff0000;}
 
 .soundWrapIcon {display: block;width: 36px;height: 36px;margin:5px 0 5px 8px;float:left;}
+.reloadIcon {display: block;width: 36px;height: 36px;margin:5px 0 5px 8px;float:left;background:#fed800;}
 .wrapZoomLnk {display: block;width: 36px;height: 36px;margin:5px 2px 5px 8px;float:left;}
 .soundWrapIcon a {display:block;width:100%;height:100%;background:url('images/buttons/sound.png') 0 0 no-repeat;background-size:100% auto;border-radius:3px;border:1px solid #ffffff;}
+.reloadIcon a {display:block;width:100%;height:100%;background:#fed800 url('images/reload-icon.png') 50% 50% no-repeat;background-size:80% auto;border-radius:3px;border:1px solid #ffffff;}
 .wrapZoomLnk a {display:block;width:100%;height:100%;background:#3b0d00 url('images/zoom-icon.png') 50% 50% no-repeat;background-size:80% auto;border-radius:3px;border:1px solid #ffffff;}
 .wrapSettingsSound {display:inline-block;float:left;margin:5px;}
 .wrapSettingsSound .inpBlock {display:inline-block;float:left;border:1px solid #711e07;border-radius:3px;background:#ffffff;padding:3px;}
