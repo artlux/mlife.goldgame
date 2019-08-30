@@ -14,7 +14,10 @@
 <plugin name="cordova-plugin-splashscreen" spec="~5.0.3"/>
 <plugin name="cordova-plugin-insomnia" spec="~4.3.0"/>
 <plugin name="cordova-android-firebase-gradle-release" spec="^4.0.0">
-    <variable name="firebase-messaging" value="20.0.0" />
+    <variable name="firebase-messaging" value="11.6.2" />
+</plugin>
+<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
+	<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
 </plugin>
 <plugin name="phonegap-plugin-push" spec="~2.2.3"></plugin>
     <access origin="*" />
