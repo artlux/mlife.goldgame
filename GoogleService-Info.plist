@@ -2,28 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>723586620698-tuld7im6suttk76v5cdp7tas65688ai3.apps.googleusercontent.com</string>
+	<string>925605788707-2sk9jebael66e31o5t8tt863v2j292ri.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.723586620698-tuld7im6suttk76v5cdp7tas65688ai3</string>
+	<string>com.googleusercontent.apps.925605788707-2sk9jebael66e31o5t8tt863v2j292ri</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAc25othSF2TzyP7BbAFEzWscifBJGfOIc</string>
+	<string>AIzaSyDc1DoT8zCqj26f1rHahq2EFy0i-oLUAos</string>
 	<key>GCM_SENDER_ID</key>
-	<string>723586620698</string>
+	<string>925605788707</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>mlife.knrasp</string>
+	<string>mlife.ggame</string>
 	<key>PROJECT_ID</key>
-	<string>mlifeknrasp</string>
+	<string>mlifeggame-89e8f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mlifeknrasp.appspot.com</string>
+	<string>mlifeggame-89e8f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
@@ -33,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:723586620698:ios:d0364d39cea3ff03</string>
+	<string>1:925605788707:ios:b4255567034765cd</string>
 	<key>DATABASE_URL</key>
-	<string>https://mlifeknrasp.firebaseio.com</string>
+	<string>https://mlifeggame-89e8f.firebaseio.com</string>
 </dict>
 </plist>

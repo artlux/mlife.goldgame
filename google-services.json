@@ -1,39 +1,37 @@
 {
   "project_info": {
-    "project_number": "723586620698",
-    "firebase_url": "https://mlifeknrasp.firebaseio.com",
-    "project_id": "mlifeknrasp",
-    "storage_bucket": "mlifeknrasp.appspot.com"
+    "project_number": "925605788707",
+    "firebase_url": "https://mlifeggame-89e8f.firebaseio.com",
+    "project_id": "mlifeggame-89e8f",
+    "storage_bucket": "mlifeggame-89e8f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723586620698:android:d0364d39cea3ff03",
+        "mobilesdk_app_id": "1:925605788707:android:b4255567034765cd",
         "android_client_info": {
-          "package_name": "mlife.knrasp"
+          "package_name": "mlife.ggame"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723586620698-302kp4clqhkotu0p6rfqirlpfuqkv4s5.apps.googleusercontent.com",
+          "client_id": "925605788707-0gshkucrtp0h2jeame2kuo6vt28kdsss.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-yreDOqcgxNHSFP_fgKg5S245UruQ_TY"
+          "current_key": "AIzaSyDuNuzBjTIYRd1XuX6MgNcjh6pKzJEjB4E"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925605788707-0gshkucrtp0h2jeame2kuo6vt28kdsss.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
