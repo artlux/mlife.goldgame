@@ -19,7 +19,9 @@
 <plugin name="cordova-plugin-admob-free" spec="~0.27.0">
 	<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
 </plugin>
-<plugin name="phonegap-plugin-push" spec="~2.2.3"></plugin>
+<plugin name="phonegap-plugin-push" spec="~2.2.3">
+	<variable name="FCM_VERSION" value="11.6.2" />
+</plugin>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
