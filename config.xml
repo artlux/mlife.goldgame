@@ -13,6 +13,10 @@
 <plugin name="cordova-plugin-inappbrowser" spec="~3.1.0" />
 <plugin name="cordova-plugin-splashscreen" spec="~5.0.3"/>
 <plugin name="cordova-plugin-insomnia" spec="~4.3.0"/>
+<plugin name="cordova-android-firebase-gradle-release" spec="~4.0.0">
+    <variable name="firebase-messaging" value="11.8.0" />
+    <variable name="firebase-core" value="11.8.0" />
+</plugin>
 <plugin name="cordova-admob-sdk" spec="~0.24.1">
     <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
 </plugin>
@@ -20,7 +24,7 @@
 	<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
 </plugin>
 <plugin name="phonegap-plugin-push" spec="~2.2.3">
-	<variable name="FCM_VERSION" value="11.6.2" />
+	<variable name="FCM_VERSION" value="11.8.0" />
 </plugin>
     <access origin="*" />
     <allow-intent href="http://*/*" />
