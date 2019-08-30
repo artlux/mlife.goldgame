@@ -33,7 +33,9 @@
 	<splash src="splash.png"/>
     <platform name="android">
 		<preference name="AndroidPersistentFileLocation" value="Compatibility" />
-		<resource-file src="google-services.json" target="google-services.json" />
+		<platform name="android">
+		  <resource-file src="google-services.json" target="app/google-services.json" />
+		</platform>
 		<allow-intent href="market:*" />
 		<preference name="android-minSdkVersion" value="19" />
 		<preference name="SplashMaintainAspectRatio" value="true" />
