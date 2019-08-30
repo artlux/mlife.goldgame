@@ -11,7 +11,6 @@
 <plugin name="cordova-plugin-network-information" spec="~2.0.2" />
 <plugin name="cordova-plugin-file" spec="~6.0.2" />
 <plugin name="cordova-plugin-inappbrowser" spec="~3.1.0" />
-<plugin name="cordova-sqlite-evcore-extbuild-free" spec="~0.10.1" />
 <plugin name="cordova-plugin-splashscreen" spec="~5.0.3"/>
 <plugin name="cordova-plugin-insomnia" spec="~4.3.0"/>
 

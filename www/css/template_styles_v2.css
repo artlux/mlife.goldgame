@@ -233,7 +233,7 @@ input.form-cnt {display:block;border:1px solid #000000;color:#000000;font-size:1
 	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
 	box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
 	border:3px solid #ae0300;background:#ffedab url('images/bg/bg_window.jpg') 50% 50% repeat;border-radius:0;
-	height:390px;
+	height:440px;
 	max-height:80%;
 	max-width:600px;
 	width:96%;
@@ -267,7 +267,11 @@ input.form-cnt {display:block;border:1px solid #000000;color:#000000;font-size:1
     color: #fff004;
     font-size: 23px;
     line-height: 30px;
-	margin:20px auto 4px auto;
+	margin:30px auto 4px auto;
+}
+@media (orientation: landscape) {
+.modalBuild .closeBuild {margin:5px auto 4px auto;}
+.modalBuild .content {max-height:70%;}
 }
 .modalBuild .buildContentWrap {overflow-y:auto;display:block;height:100%;}
 .modalBuild .wrapContentBg {background:#ffedab url('images/bg/bg_window.jpg') 50% 50% repeat;padding:10px;}
@@ -356,8 +360,8 @@ user-select: none;
 
 .rowCost {display:block;overflow:hidden;margin-bottom:10px;}
 .gameLegend .resValues {display:inline-block;float:left;clear:both;}
-.gameLegend .resValues span, .rowCost span {display:inline-block;border:1px solid #f6bb45;border-radius:2px;color:#ffffff;background:#3b0d00;margin:3px 2px 0px 2px;
-font-weight:normal;font-size:14px;line-height:18px;padding:3px 5px;clear:none;float:left;
+.gameLegend .resValues span, .rowCost span {display:inline-block;border:1px solid #f6bb45;border-radius:2px;color:#ffffff;background:#3b0d00;margin: 2px 1px 0px 1px;
+font-weight:normal;font-size:14px;line-height:18px;padding:2px 3px;clear:none;float:left;
 }
 .rowCost span {clear:none;}
 .gameLegend .resValues span i, .rowCost span i {font-style:normal;}
@@ -371,7 +375,7 @@ font-weight:normal;font-size:14px;line-height:18px;padding:3px 5px;clear:none;fl
     width: 26px;
     height: 16px;
 	overflow:hidden;text-indent:-99px;
-	margin-right:3px;
+	margin-right:1px;
 	}
 .gameLegend .resValues span.item1 b, .rowCost span.item1 b {background:url('images/icons_res.png') -4px -6px no-repeat;background-size:auto 48px;}
 .gameLegend .resValues span.item2 b, .rowCost span.item2 b {background:url('images/icons_res.png') -36px -6px no-repeat;background-size:auto 48px;}
@@ -390,7 +394,7 @@ background:url('images/mdi_menu@2x.png') 50% 50% no-repeat;background-size:30px 
 ul.menu {display:block;padding:20px 0;margin:auto;text-align:center;}
 ul.menu li {display:inline-block;clear:both;margin:10px 10px;max-width:380px;}
 ul.menu li a {display:block;text-decoration:none;text-align:center;font-weight:bold;position:relative;opacity:0.9;}
-ul.menu li a span {display:block;background:url('images/buttons/button_1.png') 0 4px repeat-x;margin:0px 33px;height:52px;line-height:52px;font-size:20px;text-transform:uppercase;color:#44231a;}
+ul.menu li a span {display:block;background:url('images/buttons/button_1.png') 0 4px repeat-x;margin:0px 33px;height:52px;line-height:52px;font-size:18px;text-transform:uppercase;color:#240b06;}
 ul.menu li a span:before {width:33px;height:56px;display:block;content:' ';position:absolute;top:0;left:0;background:url('images/buttons/button_1.png') -9px -56px no-repeat;z-index:2;}
 ul.menu li a span:after {width:33px;height:56px;display:block;content:' ';position:absolute;top:0;right:0;background:url('images/buttons/button_1.png') -199px -60px no-repeat;z-index:2;}
 ul.menu li a:hover {opacity:1;}
@@ -482,7 +486,7 @@ border:1px solid #e1e6c3;background:#ffffff;color:#000000;
 .contentModal .navigation span.navnext:hover {color:#737373;border:1px solid #737373;}
 
 .avatarList {display:block;text-align:center;}
-.avatarList .item {display:inline-block;margin:10px;width:100px;cursor:pointer;border:2px solid #d0d0d0;opacity:0.5;}
+.avatarList .item {display:inline-block;margin:5px;width:80px;cursor:pointer;border:2px solid #d0d0d0;opacity:0.5;}
 .avatarList .item:hover {cursor:pointer;opacity:1;}
 .avatarList .item.active {border:2px solid #ae0300;opacity:1;}
 .avatarList .item img {width:100%;height:auto;}
@@ -528,9 +532,9 @@ text-decoration:none;clear:both;}
 		-ms-transform: rotate(45deg);
 		-webkit-transform: rotate(45deg);
 		-moz-transform: rotate(45deg);
-	background: rgb(238,250,145);
+	background: rgb(68,35,26);
 	border-radius: 4px;
-	border: 2px solid rgb(0,0,0);
+	border: 2px solid rgb(255,255,255);
 	transition: background 115ms linear;
 		-o-transition: background 115ms linear;
 		-ms-transition: background 115ms linear;
@@ -607,6 +611,8 @@ background: #5a1906 url('images/bg/bg_wood.jpg') 50% 50% repeat;color:#ffffff;te
 box-shadow: 0px 0px 7px 2px rgba(0,0,0,0.75);
 max-width:140px;
 }
+.buildMenu .item-attack-log {height:auto;width:116px;background:#f6eada;color:#000000;}
+.buildMenu .item-attack-log .text {overflow:hidden;}
 .buildMenu .item a {text-decoration:none;color:#ffffff;}
 .buildMenu .item .image {display:block;width:100%;text-align:center;height:50px;overflow:hidden;}
 .buildMenu .item .image img {max-height:50px;width:auto;border-radius:3px;}
@@ -615,6 +621,7 @@ max-width:140px;
 .buildMenu .item .text2 {font-size:13px;line-height:16px;height:16px;width:100%;clear:both;display:block;}
 
 .buildMenuBy .item {height:120px;margin:3px 2px 8px 4px;}
+.buildMenuBy .item-attack-log {height:auto;}
 
 .buildMenu a.buildByBtn {
 	font-size: 13px;
@@ -745,7 +752,7 @@ text-align:left;
 
 .topGameBlockGameMapWrap {overflow:hidden;width:100%;height:100%;}
 
-.contentModal .preload, .message-fixed-container .preload, .modalBuild .preload {background:#711e07;display:block;width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.3;}
+.contentModal .preload, .message-fixed-container .preload, .modalBuild .preload {background:#711e07;display:block;width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.5;}
 .contentModal .preload .load, .message-fixed-container .preload .load, .modalBuild .preload .load {
 	/*display:block;width:100%;height:100%;background:url('images/preloader.gif') 50% 50% no-repeat;*/
 	width: 39px;
@@ -756,7 +763,7 @@ text-align:left;
 		-ms-transform: rotate(45deg);
 		-webkit-transform: rotate(45deg);
 		-moz-transform: rotate(45deg);
-	background: rgb(238,250,145);
+	background: rgb(68,35,26);
 	border-radius: 4px;
 	border: 2px solid rgb(0,0,0);
 	transition: background 115ms linear;
@@ -846,6 +853,30 @@ font-weight:bold;font-size:26px;margin:5px 2px;}
 .levelWindow .bonus .wrapBonus .rowCost {text-align:center;}
 .levelWindow .bonus .wrapBonus .rowCost span {float:none;}
 
+.wrapMapBlock .unitsWrapper{text-align:left;}
+.wrapMapBlock .unitsWrapper .unit {width:40px;}
+.wrapMapBlock .unitsWrapper .unit .num {font-size:14px;}
+.wrapMapBlock .unitsWrapper .unit .image {height:40px;}
+.wrapMapBlock .unitsWrapper .unit .image img {height:40px;}
+.wrapMapBlock .unitsWrapper .unit .cnt {font-size:14px;}
+.wrapMapBlock .unitsWrapper .unit .cnt_red {font-size:14px;margin-top:2px;}
+
+@media (max-width: 680px) {
+	.bottomGameBlock {height:106px;}
+	.bottomGameBlock .item {padding:2px;}
+	.bottomGameBlock .item .image {height:30px;}
+	.bottomGameBlock .item .imageBig {height:46px;}
+	.bottomGameBlock .item .image img {max-height:30px;}
+	.bottomGameBlock .item .imageBig img {max-height:46px;}
+	.bottomGameBlock .item .text {font-size:12px;line-height:13px;height:14px;}
+	.bottomGameBlock .item .text2 {font-size:12px;line-height:13px;height:14px;}
+	.bottomGameBlock .item {min-width:80px;}
+	.buildMenu .item-attack-log {box-shadow:none;position:static;padding-bottom:0;}
+	/*.bottomGameBlock {position:fixed;}*/
+	.buildMenu .item-attack-log .buildByBtnWrap {position:static;margin:5px auto;}
+	.buildMenu .item {width:116px;}
+}
+
 @keyframes cssload-change {
 	0% {
 		border-radius: 4px;
@@ -863,18 +894,4 @@ font-weight:bold;font-size:26px;margin:5px 2px;}
 	100% {
 		border-radius: 4px;
 	}
-}
-
-@media (max-width: 680px) {
-	.bottomGameBlock {height:106px;}
-	.bottomGameBlock .item {padding:2px;}
-	.bottomGameBlock .item .image {height:30px;}
-	.bottomGameBlock .item .imageBig {height:46px;}
-	.bottomGameBlock .item .image img {max-height:30px;}
-	.bottomGameBlock .item .imageBig img {max-height:46px;}
-	.bottomGameBlock .item .text {font-size:12px;line-height:13px;height:14px;}
-	.bottomGameBlock .item .text2 {font-size:12px;line-height:13px;height:14px;}
-	.bottomGameBlock .item {min-width:80px;}
-	
-	/*.bottomGameBlock {position:fixed;}*/
 }
