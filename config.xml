@@ -17,7 +17,9 @@
 <plugin name="cordova-plugin-splashscreen" spec="~5.0.3"/>
 <plugin name="cordova-plugin-insomnia" spec="~4.3.0"/>
 <plugin name="phonegap-plugin-push" spec="~2.2.3"/>
-<plugin name="cordova-plugin-admob-free" spec="~0.27.0"/>
+<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
+	<variable name="ADMOB_APP_ID" value="925605788707" />
+</plugin>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -51,9 +53,6 @@
     </platform>
     <platform name="ios">
 		<resource-file src="GoogleService-Info.plist" />
-		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
-			<string>mlifeggame-89e8f</string>
-		</config-file>
 		<preference name="DisallowOverscroll" value="true" />
 		<preference name="iosPersistentFileLocation" value="Library" />
         <allow-intent href="itms:*" />
