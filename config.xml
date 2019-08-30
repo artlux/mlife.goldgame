@@ -36,8 +36,8 @@
     <icon src="icon.png" />
 	<splash src="splash.png"/>
     <platform name="android">
-		<resource-file src="google-services.json" target="google-services.json" />
 		<preference name="AndroidPersistentFileLocation" value="Compatibility" />
+		<resource-file src="google-services.json" target="google-services.json" />
 		<allow-intent href="market:*" />
 		<preference name="android-minSdkVersion" value="19" />
 		<preference name="SplashMaintainAspectRatio" value="true" />
@@ -51,6 +51,9 @@
     </platform>
     <platform name="ios">
 		<resource-file src="GoogleService-Info.plist" />
+		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
+			<string>mlifeggame-89e8f</string>
+		</config-file>
 		<preference name="DisallowOverscroll" value="true" />
 		<preference name="iosPersistentFileLocation" value="Library" />
         <allow-intent href="itms:*" />
