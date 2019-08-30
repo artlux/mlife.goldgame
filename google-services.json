@@ -30,6 +30,13 @@
             {
               "client_id": "925605788707-0gshkucrtp0h2jeame2kuo6vt28kdsss.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "925605788707-2sk9jebael66e31o5t8tt863v2j292ri.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mlife.ggame"
+              }
             }
           ]
         }
