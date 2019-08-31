@@ -59,7 +59,7 @@
     <platform name="ios">
 		<resource-file src="GoogleService-Info.plist" />
 		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
-			<string>YOUR_IOS_ADMOB_APP_ID_AS_FOUND_IN_ADMOB</string>
+			<string>ca-app-pub-1830389177579766~9434856955</string>
 		</config-file>
 		<preference name="DisallowOverscroll" value="true" />
 		<preference name="iosPersistentFileLocation" value="Library" />
