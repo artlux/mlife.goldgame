@@ -15,10 +15,10 @@
 <plugin name="cordova-plugin-insomnia" spec="~4.3.0"/>
 <plugin name="cordova-play-services-version-adapter" spec="~1.0.2"/>
 <plugin name="phonegap-plugin-push" spec="~2.2.3">
-<variable name="FCM_VERSION" value="17.3.3" />
+	<variable name="FCM_VERSION" value="17.3.3" />
 </plugin>
 <plugin name="cordova-admob-sdk" spec="~0.24.1">
-    <variable name="PLAY_SERVICES_VERSION" value="16.0.0" />
+    <variable name="PLAY_SERVICES_VERSION" value="17.0.0" />
 </plugin>
 <plugin name="cordova-plugin-admob-free" spec="~0.27.0">
 	<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
@@ -58,6 +58,9 @@
     </platform>
     <platform name="ios">
 		<resource-file src="GoogleService-Info.plist" />
+		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
+			<string>YOUR_IOS_ADMOB_APP_ID_AS_FOUND_IN_ADMOB</string>
+		</config-file>
 		<preference name="DisallowOverscroll" value="true" />
 		<preference name="iosPersistentFileLocation" value="Library" />
         <allow-intent href="itms:*" />
