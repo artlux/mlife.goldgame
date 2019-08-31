@@ -17,13 +17,17 @@
 <plugin name="phonegap-plugin-push" spec="~2.2.3">
 	<variable name="FCM_VERSION" value="17.3.3" />
 </plugin>
-<plugin name="cordova-admob-sdk" spec="~0.24.1">
-    <variable name="PLAY_SERVICES_VERSION" value="16.0.3" />
-</plugin>
-<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
-	<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
-</plugin>
-
+<platform name="android">
+	<plugin name="cordova-admob-sdk" spec="~0.24.1">
+		<variable name="PLAY_SERVICES_VERSION" value="16.0.0" />
+	</plugin>
+	<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
+		<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
+	</plugin>
+</platform>
+<platform name="ios">
+	<plugin name="cordova-plugin-admobpro" source="npm"></plugin>
+</platform>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -58,9 +62,6 @@
     </platform>
     <platform name="ios">
 		<resource-file src="GoogleService-Info.plist" />
-		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
-			<string>ca-app-pub-1830389177579766~9434856955</string>
-		</config-file>
 		<preference name="DisallowOverscroll" value="true" />
 		<preference name="iosPersistentFileLocation" value="Library" />
         <allow-intent href="itms:*" />
