@@ -111,6 +111,7 @@ position:relative;z-index:2;}
 #chatWrapper .messages .item .replay{display:none;}
 #chatWrapper .messages .item .delete{display:none;}
 #chatWrapper .messages_1 .item .replay {display:inline-block;}
+#chatWrapper .messages_4 .item .replay {display:inline-block;}
 
 #chatWrapper .messages .item_user .replay {display:none!important;}
 #chatWrapper .messages .item_user .delete {display:inline-block;}
