@@ -281,6 +281,10 @@ input.form-cnt {display:block;border:1px solid #000000;color:#000000;font-size:1
 .modalBuild .buildContentWrap::-webkit-scrollbar-track{background:#ededed;}
 .modalBuild .buildContentWrap::-webkit-scrollbar{width: 12px;height: 12px;}
 
+.topGameBlockGameMapWrapVk::-webkit-scrollbar-thumb{background:#ededed;}
+.topGameBlockGameMapWrapVk::-webkit-scrollbar-track{background:#ededed;}
+.topGameBlockGameMapWrapVk::-webkit-scrollbar{width: 2px;height: 2px;}
+
 .modalBuild .container-fluid {font-size:15px;line-height:21px;}
 .modalBuild h3 {margin:5px 0;font-size:18px;font-weight:bold;}
 
@@ -842,8 +846,9 @@ ul.buildTabs li {display:inline-block;}
 
 .bottomGameBlockIcons {display:block;clear:both;padding-bottom:5px;overflow:hidden;}
 
-.levelWindow {position:fixed;display:block;width:90%;left:5%;top:5%;z-index: 1050;background:#f1e485 url('images/bg/bg_wood.jpg') 50% 50% repeat;}
-.levelWindow .wrapLevel {display:block;max-width:450px;padding:10px;margin:10px;border-radius:10px;border:0px solid red;text-align:center;margin:auto;}
+.levelWindow {position:fixed;display:block;width:100%;top:5%;z-index: 1050;}
+.levelWindow .wrapLevel {display:block;max-width:550px;padding:10px;margin:10px;border-radius:10px;border:0px solid red;text-align:center;margin:auto;
+background:#f1e485 url('images/bg/bg_wood.jpg') 50% 50% repeat;position:relative;}
 .levelWindow .wrapImage img {max-width:50px;height:auto;}
 .levelWindow .text {font-size: 22px;font-weight: bold;padding:10px 0;color:#ffffff;}
 .levelWindow .level {width:50px;height:50px;border-radius:50px;border:5px solid #ffffff;line-height:50px;text-align:center;display:block;clear:both;margin:auto;background: red;color:#ffffff;
@@ -864,6 +869,24 @@ font-weight:bold;font-size:26px;margin:5px 2px;}
 .wrapMapBlock .unitsWrapper .unit .image img {height:40px;}
 .wrapMapBlock .unitsWrapper .unit .cnt {font-size:14px;}
 .wrapMapBlock .unitsWrapper .unit .cnt_red {font-size:14px;margin-top:2px;}
+
+.openVk {cursor:pointer;min-width:120px;}
+.openVk .vkUserMenu {position: absolute;top: 0;background: #44231a;width: 100%;display: block;white-space: normal;height:100%;opacity:0.9;}
+.openVk .vkUserMenu span, .openVk .vkUserMenu a {display:block;padding:2px 5px;font-size:13px;line-height:15px;margin:5px 10px;width:auto;}
+.openVk .vkUserMenu a {border:1px solid #f1e485;}
+.openVk .vkUserMenu a.close {border:1px solid #f1e485;background:red;}
+.status_online_1 {display:inline-block;margin-right:3px;background:#1ad41a;width:10px;height:10px;border-radius:5px;}
+.openVk .name {display:block;overflow:hidden;max-width:180px;}
+
+.quickUnitsBox {display:block;padding:3px;margin:3px;border:1px solid #000000;}
+.quickUnitsBox .unitRow {display:block;clear:both;overflow:hidden;padding:2px 0;height: 32px;}
+.quickUnitsBox .finUnitRow {display:block;clear:both;overflow:hidden;padding:2px 0;}
+.quickUnitsBox .finUnitRow .rowCost {display:inline-block;float:left;margin:3px 5px 0 0;}
+.quickUnitsBox .unitRow .form-cnt {float:left;margin:0 3px 0 3px;width:35px;}
+.quickUnitsBox .unitRow .numb {display: block;padding: 2px 5px;font-size: 18px;background: #ae0300;font-weight: bold;color: #ffffff;margin-right:3px;float:left;width:14px;text-align:center;margin-top:2px;}
+.quickUnitsBox .unitRow .image {float:left;}
+.quickUnitsBox .unitRow .image img {width:34px;height:auto;}
+.quickUnitsBox .unitRow .quickCol {display:block;padding:0px;background:#44231a;margin-left:3px;float:left;color:#ffffff;cursor:pointer;line-height:34px;text-align:center;width:34px;}
 
 @media (max-width: 680px) {
 	.bottomGameBlock {height:106px;}
