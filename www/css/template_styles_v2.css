@@ -830,6 +830,9 @@ ul.buildTabs li {display:inline-block;}
 .buildTab_3 .unit_1 {border:1px solid #ff0000;}
 .buildTab_3 .unit_3 {border:1px solid #ff0000;}
 
+.fullScreenIcon {display: block;width: 36px;height: 36px;position:fixed;z-index:3;right:10px;top:5px;}
+.fullScreenIcon a {display:block;width:100%;height:100%;background:#3b0d00 url('images/full-icon.png') 50% 50% no-repeat;background-size:90% auto;border-radius:3px;border:1px solid #ffffff;}
+.fullScreenIcon a.active {background:#3b0d00 url('images/close@2x.png') 50% 50% no-repeat;background-size:90% auto;}
 .soundWrapIcon {display: block;width: 36px;height: 36px;margin:5px 0 5px 5px;float:left;}
 .brightWrapIcon {display: block;width: 36px;height: 36px;margin:5px 0 5px 5px;float:left; display:none;}
 .reloadIcon {display: block;width: 36px;height: 36px;margin:5px 0 5px 8px;float:left;background:#f1e485;}
@@ -887,6 +890,8 @@ font-weight:bold;font-size:26px;margin:5px 2px;}
 .quickUnitsBox .unitRow .image {float:left;}
 .quickUnitsBox .unitRow .image img {width:34px;height:auto;}
 .quickUnitsBox .unitRow .quickCol {display:block;padding:0px;background:#44231a;margin-left:3px;float:left;color:#ffffff;cursor:pointer;line-height:34px;text-align:center;width:34px;}
+
+
 
 @media (max-width: 680px) {
 	.bottomGameBlock {height:106px;}
