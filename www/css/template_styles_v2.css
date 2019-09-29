@@ -909,6 +909,89 @@ font-weight:bold;font-size:26px;margin:5px 2px;}
 	.buildMenu .item {width:116px;}
 }
 
+
+.buildMenu .item {min-width:120px;}
+.buildMenu .float-left {float:left;}
+.buildMenu .item .height35 {height:35px;font-size:13px;}
+.buildMenu .item-attack-log {height:auto;width:118px;background:#ffffff;color:#000000;box-shadow:none;position:static;padding-bottom:0;}
+.buildMenu .item-reith-block {padding-bottom:5px;min-width:112px;width:112px;}
+.buildMenu .item-attack-log .buildByBtnWrap {position:static;margin:5px auto;}
+
+.event-menu .item {max-width:100%;display:block;background:#ffffff;box-shadow:none;color:#432219;overflow:hidden;}
+.event-menu .item .text {text-align:left;font-size:13px;}
+.event-menu .item .name {text-align:left;font-size:14px;font-weight:bold;color:#000000;height:auto;}
+.event-menu .item .text2 {text-align:left;font-size:13px;}
+.event-menu .item .rowCost {text-align:left;height:auto;}
+.event-menu .item .rowCost .nText {float:left;display:inline-block;font-size:13px;line-height:18px;margin-right:5px;color:#000000;font-weight:bold;}
+.event-menu .item .rowCost img {width: 18px;height:auto;float: left;margin-right: 5px;}
+.event-menu .item .row-progress {display:block;width:50%;float:left;padding:10px 0 0 0;}
+.event-menu .item .row-result {display:block;width:50%;float:right;text-align:right;padding:10px 0 0 0;}
+.event-menu .item .row-result .button-yelow {margin:0;}
+.levelMenuLinks a, .levelMenuLinks a:hover {padding:2px 5px;font-size:13px;line-height:17px;margin:0 3px 0 0;}
+@media (max-width: 680px){
+	.buildMenu .item {width:116px;min-width:116px;}
+	.buildMenu .item-attack-log {width:118px;min-width:118px;}
+	.event-menu .item {max-width:100%;width:auto;}
+	.event-menu .item .row-progress, .event-menu .item .row-result {width:100%;text-align:left;}
+}
+
+
+.gameLegend .resValues span.itembuf_01_time {background:#d93be8;}
+.gameLegend .resValues span.itembuf_03_time {background:#6eb6e0;}
+
+.unitsListLearning {display:block;padding:5px 0;}
+.unitsListLearning a {display:block;width:60px;height:90px;overflow:hidden;display:inline-block;text-align:center;padding:3px;margin:3px;text-decoration:none;font-size:12px;border:2px solid #44231a;background:#ffffff;opacity:0.7;}
+.unitsListLearning a.active {background:#f1e485;opacity:1;}
+.unitsListLearning a:hover {opacity:1;}
+.unitsListLearning a img {width:40px;height:auto;margin:auto;float:none;}
+.unitsListLearning a span {display:block;clear:both;text-align:center;padding:3px 0;}
+.unitsListLearning a span.cntUnit {background: red;color: #ffffff;padding: 0;font-size: 13px;margin-bottom:3px;}
+
+.torgResList {width:100%;border-spacing:0;border-top:1px solid #000000;border-left:1px solid #000000;margin-top:10px;}
+.torgResList th, .torgResList td {border-bottom:1px solid #000000;border-right:1px solid #000000;padding:1px 2px;font-size:12px;text-align:left;}
+.torgResList th {font-weight:bold;padding:5px 2px;font-size:13px;}
+.torgResList .rowCost {margin-bottom:0;margin:0;padding:0;}
+.torgResList .rowCost span {margin:0;padding:3px;}
+.torgResList .rowCost span b {margin-right:1px;}
+.torgResList td a {text-decoration:none;}
+
+.torgResList tr .message-container .message-blue p {font-size:13px;}
+.torgResList tr .message-container .message-left {padding-top:0;}
+
+.contentModal_repl {padding-top:10px;clear:both;}
+.contentModal_repl .navigation {display:block;width:100%;padding:0px 0;clear:both;overflow:hidden;text-align:center;}
+.contentModal_repl .navigation .navprew,
+.contentModal_repl .navigation .navnext,
+.contentModal_repl .navigation .navall {display:inline-block;padding:2px 15px;font-size:14px;line-height:28px;text-transform:uppercase;
+color:#737373;margin:0 10px;border:1px solid #737373;display:none;}
+.contentModal_repl .navigation span.num {display:inline-block;padding:0 0px;font-size:18px;line-height:32px;float:left;
+}
+.contentModal_repl .navigation span.name {display:inline-block;padding:0 10px 0 0px;font-size:18px;line-height:32px;float:left;color:#000000;
+}
+.contentModal_repl .navigation span.num b {display:inline-block;color:#ffffff;padding:0 0px;font-weight: normal;
+background:#711e07;font-size:18px;line-height:32px;height:32px;width:32px;
+border:1px solid #711e07;
+}
+.contentModal_repl .navigation span.num a {display:inline-block;color:#737373;text-decoration:none;padding:0 0px;
+font-size:18px;line-height:32px;height:32px;width:32px;
+border:1px solid #e1e6c3;background:#ffffff;color:#000000;
+}
+.contentModal_repl .navigation span.num a:hover {color:#711e07;border:1px solid #711e07;}
+
+.contentModal_repl .navigation .navprew, 
+.contentModal_repl .navigation .navnext, 
+.contentModal_repl .navigation .navall a {color:#737373;text-decoration:none;}
+.contentModal_repl .navigation .navprew:hover, 
+.contentModal_repl .navigation .navnext:hover, 
+.contentModal_repl .navigation .navall:hover {color:#00b7f4;border:1px solid #00b7f4;}
+.contentModal_repl .navigation span.navprew:hover, 
+.contentModal_repl .navigation span.navnext:hover {color:#737373;border:1px solid #737373;}
+
+.torgResList tr.red-row td.by-row .button-red {background:#a7a7a7;opacity:0.8;}
+.torgResList tr.green-row td.by-row .button-red {background:#009c1c;}
+.torgResList tr.green-row-2 td.by-row .button-red {background:#00859c;}
+.torgResList tr.white-row td.by-row .button-red {background:#ffffff;color:#3b0d00;opacity:0.8;}
+
 @keyframes cssload-change {
 	0% {
 		border-radius: 4px;
