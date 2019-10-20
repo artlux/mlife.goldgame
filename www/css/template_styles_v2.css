@@ -992,6 +992,42 @@ border:1px solid #e1e6c3;background:#ffffff;color:#000000;
 .torgResList tr.green-row-2 td.by-row .button-red {background:#00859c;}
 .torgResList tr.white-row td.by-row .button-red {background:#ffffff;color:#3b0d00;opacity:0.8;}
 
+
+#chatMainWrapper .messages .text_input .button-yelow {color:#000000;padding:0px 4px;margin:1px 1px;}
+
+.torgResList td a.openMap {display: block;overflow: hidden;}
+
+#copyToLink {display:block;overflow:hidden;background:#000000;font-size:12px;margin:3px;color:#ffffff;opacity:0.4;text-decoration:none;padding:0 3px;
+float: right;z-index: 10;position: relative;}
+
+.bottomGameBlock .itemGameIconNew {background:#f1e485;}
+.bottomGameBlock .itemGameIconNew .link_relative {height:113px;width:106px;}
+.bottomGameBlock .itemGameIconNew .image {position: absolute;top: -3px;width: 100%;height: 100%;background:none;}
+.bottomGameBlock .itemGameIconNew .image img {max-height:100%;height:100px;width:100px;margin:auto;opacity:1;margin-top:14%;}
+.bottomGameBlock .itemGameIconNew .name {z-index: 2;color: #240b06;position: relative;padding:1px 0 5px 0;opacity: 0.85;font-size:15px;opacity:1;}
+.bottomGameBlock .itemGameIconNew .menurow {display:none;}
+.bottomGameBlock .itemGameIconNew .text2 {background: #240b06;width: 100%;height: auto;display: none;position: absolute;bottom: 0;padding: 5px 0;white-space: normal;}
+.bottomGameBlock .itemGameIconNew .itemDisable .text2 {display:block;font-size:13px;}
+.bottomGameBlock .itemGameIconNew .itemDisable {opacity:0.9;}
+
+@media (max-width: 680px){
+	.bottomGameBlock .itemGameIconNew .link_relative  {height:86px;width:86px;}
+	.bottomGameBlock .itemGameIconNew .image img {max-height:100%;height:72px;width:72px;margin:auto;opacity:1;margin-top:15%;}
+	.bottomGameBlock .itemGameIconNew .name {font-size:14px;}
+}
+
+.inlBtn {
+color: #ffffff;
+text-decoration: none;
+line-height: 24px;
+padding-right: 5px;
+border-radius: 5px;
+display: inline-block;
+background: #44231a url('images/bg/bg_wood.jpg') 50% 50% repeat;
+}
+.inlBtn:hover {color:#ffffff;}
+.inlBtn img {width:20px;height:20px;float:left;margin:3px;}
+
 @keyframes cssload-change {
 	0% {
 		border-radius: 4px;
