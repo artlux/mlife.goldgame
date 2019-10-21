@@ -31,7 +31,7 @@
 </platform>
 <platform name="ios">
 	<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
-		<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
+		<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~7920731162" />
 	</plugin>
 </platform>
     <access origin="*" />
