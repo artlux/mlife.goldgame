@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="mlife.ggame" version="1.3.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="mlife.ggame" version="1.3.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Золотое королевство</name>
     <description>
       Золотое королевство
@@ -96,6 +96,9 @@
 		<icon src="res/ios/icon-167.png" width="167" height="167" />
 		<icon src="res/ios/icon-1024.png" width="1024" height="1024" />
 		<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+			<string>приложение хотело бы использовать примерное местоположение для показа более релевантной рекламы</string>
+		</edit-config>
+		<edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
 			<string>приложение хотело бы использовать примерное местоположение для показа более релевантной рекламы</string>
 		</edit-config>
 		<edit-config target="NSBluetoothAlwaysUsageDescription" file="*-Info.plist" mode="merge">
