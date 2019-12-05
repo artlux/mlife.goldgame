@@ -32,5 +32,7 @@
 	<string>1:925605788707:ios:b4255567034765cd</string>
 	<key>DATABASE_URL</key>
 	<string>https://mlifeggame-89e8f.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-1830389177579766~7920731162</string>
 </dict>
 </plist>
