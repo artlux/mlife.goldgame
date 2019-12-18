@@ -25,14 +25,13 @@
 </plugin>
 
 <platform name="android">
-	<plugin name="google-analytics-plugin"></plugin>
+	<plugin name="cordova-plugin-analytics"></plugin>
 	<plugin name="cordova-plugin-admob-free" spec="~0.27.0">
 		<variable name="ADMOB_APP_ID" value="ca-app-pub-1830389177579766~9434856955" />
 	</plugin>
 	<plugin name="cordova-plugin-purchase" spec="~9.0.1">
 		<variable name="BILLING_KEY" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2uIvE7PfB/B+phGljUrqBAizAB6v0lnoYWmoZzByh6xDgp4v5P/zWEDwbPs2ntRsoeHIMt3Snr7ZlBo2c/RRUsYx7EPsd67ytPQmuXdsPLOmZH9MVPA82OM2MSSZujqpaEmzCSO2tq9cKb/gIgl2xUjbrJktmhLYL7tDplVRpQeU2D121cfHKm0GgAjrGp6VBXzsRszM2Id5UfhfjJiCUDBq1hNqFJedT2FeWOMqaWS2E7GxDVxgBR6gIWaazy9CRk6ks+RONLpvb9tvqcPdA9bi4GlhV4PIBv9H/R9QgZ9ZShG+YZjorfMG++t7Be/GlzVEMoA++yr7zZjKhT2xHwIDAQAB" />
 	</plugin>
-	
 </platform>
 <platform name="ios">
 	<plugin name="cordova-plugin-firebase-analytics" spec="~3.0.0"></plugin>
