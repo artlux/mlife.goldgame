@@ -1234,6 +1234,23 @@ html {overflow-y: hidden;}
 }
 /*1.0.20 end*/
 
+/*1.0.21*/
+.levelAbs {position:absolute;top:0;left:0;z-index:2;background:#f1e485;color:#000000;padding:3px 8px;font-size:13px;line-height:13px;font-weight:bold;border-bottom-right-radius:5px;}
+.image-galera {background: #00b2cb;}
+.image-galera-td {padding:0px;width:100px;background: #00b2cb;vertical-align:top;}
+.image-galera img {max-height:80px;height:80px;}
+
+@media (max-width: 680px){
+	.image-galera-td {width:80px;}
+	.image-galera img {max-height:70px;height:70px;}
+	.table-galeys .inlBtn {font-size:14px;}
+	.table-galeys .mapName {font-size:14px;}
+	.table-galeys .str-label {font-size:13px;}
+	.table-galeys .btn-td {min-width:110px;}
+	.table-galeys-atc .btn-td, .table-galeys-atc .map-info {display:block;width:93%;text-align:left;}
+}
+/*1.0.21 end*/
+
 @keyframes cssload-change {
 	0% {
 		border-radius: 4px;
